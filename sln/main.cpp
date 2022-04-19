@@ -144,7 +144,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
         sprites.push_back(sprite);
     }
 
- 
+ //
 
 #pragma endregion 描画初期化処理
 
