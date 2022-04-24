@@ -87,6 +87,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     //3dオブジェクト静的初期化
     Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
 
+    FbxLoader::GetInstance()->LoadModelFromFile("cube");
+
     // DirectX初期化処理　ここまで
 #pragma endregion DirectX初期化処理
 
