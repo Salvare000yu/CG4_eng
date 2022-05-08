@@ -13,6 +13,7 @@ class Sprite
 {
 
 public:
+	static SpriteCommon* GetInstance();
 
 	// 頂点データ
 	struct VertexPosUv
@@ -30,15 +31,14 @@ public:
 	/// <summary>
 	/// スプライト生成
 	/// </summary>
-	/// <param name="spriteCommon">スプライト共通</param>
 	/// <param name="texNumber">テクスチャ番号</param>
 	/// <param name="anchorpoint">アンカーポイント</param>
 	/// <param name="isFlipX">x反転</param>
 	/// <param name="isFlipY">y反転</param>
-	static Sprite* Create(SpriteCommon* spriteCommon, UINT texNumber, DirectX::XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	static Sprite* Create(UINT texNumber, DirectX::XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 	//初期化
-	void Initialize(SpriteCommon* spriteCommon, UINT texNumber, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
+	void Initialize(UINT texNumber, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
 
 	/// <summary>
 	/// 頂点バッファ転送
@@ -63,8 +63,6 @@ public:
 	void SetTexSize(const DirectX::XMFLOAT2& texSize) { texSize_ = texSize; }
 
 private:
-	//スプライト共通
-	SpriteCommon* spriteCommon_ = nullptr;
 	//頂点バッファ;
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_;
 	//頂点バッファビュー;

@@ -4,9 +4,7 @@
 
 #include "FbxLoader.h"
 
-//#include "fbxsdk.h"//fbxsdk関数呼び出し
-    //FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
-    //FbxLoader::GetInstance()->LoadModelFromFile("cube");
+#include "fbxsdk.h"//fbxsdk関数呼び出し
 
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
     // メッセージで分岐
@@ -20,6 +18,7 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
+   
 
     GameBass* game=new MyDirectXGame;
 
@@ -27,7 +26,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
     delete game;
 
-    //FbxLoader::GetInstance()->Finalize();
+    FbxLoader::GetInstance()->Finalize();
+
+    //FbxLoader::GetInstance()->LoadModelFromFile("cube");
 
 	return 0;
 }

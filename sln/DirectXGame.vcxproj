@@ -152,13 +152,17 @@
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="GameBass.cpp" />
+    <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="BaseScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="MyDirectXGame.cpp" />
     <ClCompile Include="Object3d.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -215,13 +219,17 @@
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="GameBass.h" />
+    <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MyDirectXGame.h" />
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="PipelineSet.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="WinApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -8,6 +8,8 @@
 #include "Sprite.h"
 #include "DebugText.h"
 #include "Audio.h"
+#include "SceneManager.h"
+#include "FbxLoader.h"
 
 class GameBass
 {
@@ -36,7 +38,7 @@ public:
     /// <summary>
 /// •`‰æ
 /// </summary>
-    virtual void Draw()=0;
+    virtual void Draw();
 
     virtual bool IsEndReq() { return endReq_; }
 protected:
@@ -48,5 +50,6 @@ protected:
     Audio* audio = nullptr;
     DebugText* debugText = nullptr;
     SpriteCommon* spriteCommon = nullptr;
+    SceneManager* sceneManager_ = nullptr;
 };
 

@@ -1,5 +1,12 @@
 #include "DebugText.h"
 
+DebugText* DebugText::GetInstance()
+{
+    static DebugText instance;
+
+    return &instance;
+}
+
 void DebugText::Initialize(SpriteCommon* spriteCommon, UINT texnumber)
 {
     //nullptr
@@ -11,7 +18,7 @@ void DebugText::Initialize(SpriteCommon* spriteCommon, UINT texnumber)
     for (int i = 0; i < _countof(sprites_); i++)
     {
         // スプライトを生成する
-        sprites_[i] = Sprite::Create(spriteCommon, texnumber, { 0,0 });
+        sprites_[i] = Sprite::Create(texnumber, { 0,0 });
     }
 }
 

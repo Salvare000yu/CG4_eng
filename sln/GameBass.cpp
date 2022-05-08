@@ -1,4 +1,5 @@
-﻿#include "GameBass.h"
+﻿//フレームワーク旧
+#include "GameBass.h"
 
 void GameBass::Run()
 {
@@ -42,14 +43,14 @@ void GameBass::Initialize()
     dxCommon->Initialize(winApp);
 
     // スプライト共通部分初期化
-    spriteCommon = new SpriteCommon();
+    spriteCommon = SpriteCommon::GetInstance();
     spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
 
     //const int SPRITES_NUM = 1;
     //Sprite sprites[SPRITES_NUM];
 
       // デバッグテキスト
-    debugText = new DebugText();
+    debugText = DebugText::GetInstance();
 
     // デバッグテキスト用のテクスチャ番号を指定
     const int debugTextTexNumber = 0;
@@ -59,34 +60,38 @@ void GameBass::Initialize()
     debugText->Initialize(spriteCommon, debugTextTexNumber);
 
     //入力の初期化
-    input = new Input();
+    input = Input::GetInstance();
     input->Initialize(winApp);
 
     //オーディオの初期化
-    audio = new Audio();
+    audio = Audio::GetInstance();
     audio->Initialize();
 
     //3dオブジェクト静的初期化
-    Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::window_width, WinApp::window_height);
+    Object3d::StaticInitialize(dxCommon->GetDevice(), dxCommon->GetCmdList(),WinApp::window_width, WinApp::window_height);
+
+    //シーンマネージャーの生成
+    sceneManager_ = new SceneManager();
+
+    //fbx　初期化
+    FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
 }
 
 void GameBass::Finalize()
 {
+    //FbxLoader::GetInstance()->Finalize();
+
+    //シーンマネージャ解放
+    delete sceneManager_;
+
     //デバッグテキスト解放
     debugText->Finalize();
-    delete debugText;
-
-    //sprite共通解放
-    delete spriteCommon;
 
     //オーディオ解放
     audio->Finalize();
-    delete audio;
 
     //DirectX解放
     delete dxCommon;
-    //入力解放
-    delete input;
 
     //windowsAPIの終了処理
     winApp->Finalize();
@@ -117,8 +122,26 @@ void GameBass::Update()
 #pragma endregion ウィンドウメッセージ処理
     //入力更新
     input->Update();
+
+    //シーン更新
+    sceneManager_->Update();
 }
 
 void GameBass::Draw()
 {
+#pragma region グラフィックスコマンド
+
+    //描画前処理
+    dxCommon->PreDraw();
+
+    //シーン描画
+    sceneManager_->Draw();
+
+    // デバッグテキスト描画
+    debugText->DrawAll();
+
+    // ４．描画コマンドここまで
+
+    //描画後処理
+    dxCommon->PostDraw();
 }

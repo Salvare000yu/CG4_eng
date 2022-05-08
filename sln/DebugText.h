@@ -14,6 +14,8 @@ public: // 定数の宣言
     static const int fontLineCount = 14;    // フォント画像内1行分の文字数
 
 public: // メンバ関数
+    static DebugText* GetInstance();
+
     void Initialize(SpriteCommon* spriteCommon, UINT texnumber);
 
     void Finalize();

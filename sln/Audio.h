@@ -46,6 +46,8 @@ public:
         unsigned int bufferSize;
     };
 
+    static Audio* GetInstance();
+
     /// <summary>
     /// ‰Šú‰»
     /// </summary>

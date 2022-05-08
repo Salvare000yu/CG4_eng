@@ -10,6 +10,8 @@
 class SpriteCommon
 {
 public:
+
+    static SpriteCommon* GetInstance();
     // テクスチャの最大枚数
     static const int spriteSRVCount = 512;
 

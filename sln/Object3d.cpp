@@ -25,12 +25,13 @@ XMFLOAT3 Object3d::up = { 0, 1, 0 };
 XMMATRIX Object3d::matBillboard = XMMatrixIdentity();
 XMMATRIX Object3d::matBillboardY = XMMatrixIdentity();
 
-bool Object3d::StaticInitialize(ID3D12Device * device, int window_width, int window_height)
+bool Object3d::StaticInitialize(ID3D12Device * device, ID3D12GraphicsCommandList* cmdList, int window_width, int window_height)
 {
 	// nullptrチェック
 	assert(device);
 
 	Object3d::device = device;
+	Object3d::cmdList = cmdList;
 
 	// グラフィックパイプラインの生成
 	CreateGraphicsPipeline();
@@ -195,13 +196,13 @@ void Object3d::CreateGraphicsPipeline()
 	}
 }
 
-void Object3d::PreDraw(ID3D12GraphicsCommandList * cmdList)
+void Object3d::PreDraw()
 {
-	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(Object3d::cmdList == nullptr);
+	//// PreDrawとPostDrawがペアで呼ばれていなければエラー
+	//assert(Object3d::cmdList == nullptr);
 
-	// コマンドリストをセット
-	Object3d::cmdList = cmdList;
+	//// コマンドリストをセット
+	//Object3d::cmdList = cmdList;
 
 	// プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -209,8 +210,8 @@ void Object3d::PreDraw(ID3D12GraphicsCommandList * cmdList)
 
 void Object3d::PostDraw()
 {
-	// コマンドリストを解除
-	Object3d::cmdList = nullptr;
+	//// コマンドリストを解除
+	//Object3d::cmdList = nullptr;
 }
 
 Object3d * Object3d::Create()

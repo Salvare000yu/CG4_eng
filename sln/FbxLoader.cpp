@@ -4,7 +4,6 @@
 //静的メンバ変数の実態
 const std::string FbxLoader::baseDirectory = "Resources/";
 
-
 FbxLoader* FbxLoader::GetInstance()
 {
     static FbxLoader instance;

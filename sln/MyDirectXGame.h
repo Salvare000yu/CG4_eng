@@ -4,7 +4,10 @@
 
 #include "FbxLoader.h"
 
+#include "BaseScene.h"
+
 #include <vector>
+
 /// <summary>
 /// ゲーム固有クラス
 /// </summary>
@@ -26,14 +29,8 @@ public:
     void Draw() override;
 
 private:
-
-    std::vector<Sprite*> sprites;
-
-    Model* model_1 = nullptr;
-    Model* model_2 = nullptr;
-
-    Object3d* object3d_1 = nullptr;
-    Object3d* object3d_2 = nullptr;
-    Object3d* object3d_3 = nullptr;
+    ////シーン
+    //InterfaceScene* scene_ = nullptr;
+    //いつかけす↑
 };
 

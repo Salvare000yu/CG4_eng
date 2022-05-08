@@ -7,6 +7,13 @@
 
 #pragma comment(lib,"xaudio2.lib")
 
+Audio* Audio::GetInstance()
+{
+	static Audio instance;
+
+	return &instance;
+}
+
 void Audio::Initialize(const std::string& directoryPath)
 {
 	directoryPath_ = directoryPath;

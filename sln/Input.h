@@ -14,6 +14,7 @@ public:
 
 public://ƒƒ“ƒoŠÖ”
 
+	static Input* GetInstance();
 	//‰Šú‰»
 	void Initialize(WinApp* WinApp);
 	//XV
