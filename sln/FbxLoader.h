@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "FbxModel.h"
+
 class FbxLoader
 {
 private:
@@ -35,6 +37,11 @@ public:
 /// ファイルからFBXモデル読み込み
 /// </summary>
 	void LoadModelFromFile(const string& modelName);
+
+/// <summary>
+/// 再帰的にノード構成を解析
+/// </summary>　
+	void ParseNodeRecursive(FbxModel* fbxModel, FbxNode* fbxNode,Node* parent=nullptr);
 
 private:
 	// privateなコンストラクタ（シングルトンパターン）
