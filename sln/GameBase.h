@@ -11,7 +11,9 @@
 #include "SceneManager.h"
 #include "FbxLoader.h"
 
-class GameBass
+#include "Camera.h"
+
+class GameBase
 {
 public:
 
@@ -51,5 +53,6 @@ protected:
     DebugText* debugText = nullptr;
     SpriteCommon* spriteCommon = nullptr;
     SceneManager* sceneManager_ = nullptr;
+    Camera* camera = nullptr;
 };
 

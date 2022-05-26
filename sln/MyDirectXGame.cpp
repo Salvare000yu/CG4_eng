@@ -5,7 +5,7 @@
 void MyDirectXGame::Initialize()
 {
     //基底クラスの初期化処理
-    GameBass::Initialize();
+    GameBase::Initialize();
 
 #pragma region シーン初期化処理
     BaseScene* scene = new TitleScene();
@@ -20,14 +20,14 @@ void MyDirectXGame::Finalize()
 {
  
     //基底クラスの終了処理
-    GameBass::Finalize();
+    GameBase::Finalize();
 
 }
 
 void MyDirectXGame::Update()
 {
     //基底クラスの更新処理
-    GameBass::Update();
+    GameBase::Update();
 
     // DirectX毎フレーム処理　ここまで
 #pragma endregion DirectX毎フレーム処理
@@ -35,5 +35,5 @@ void MyDirectXGame::Update()
 
 void MyDirectXGame::Draw()
 {
-    GameBass::Draw();
+    GameBase::Draw();
 }

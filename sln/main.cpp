@@ -19,16 +19,13 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
    
-
-    GameBass* game=new MyDirectXGame;
+    GameBase* game=new MyDirectXGame;
 
     game->Run();
 
     delete game;
 
-    FbxLoader::GetInstance()->Finalize();
-
-    //FbxLoader::GetInstance()->LoadModelFromFile("cube");
+    //FbxLoader::GetInstance()->Finalize();
 
 	return 0;
 }

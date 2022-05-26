@@ -10,7 +10,14 @@
 class DirectXCommon
 {
 
+	DirectXCommon(const DirectXCommon& dxCommon) = delete;
+	DirectXCommon& operator=(const DirectXCommon& dxCommon) = delete;
+
+	DirectXCommon() {};
+
 public://メンバ関数
+	static DirectXCommon* GetInstance();
+
 	void Initialize(WinApp* winApp);
 
 	//描画前
@@ -30,7 +37,7 @@ private:
 	//DXGIファクトリ
 	Microsoft::WRL::ComPtr<IDXGIFactory6>dxgiFactory;
 
-	WinApp* winApp=nullptr;
+	WinApp* winApp = nullptr;
 
 	//direct3D系メンバ変数
 	Microsoft::WRL::ComPtr<ID3D12Device> device;

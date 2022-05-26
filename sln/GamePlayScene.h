@@ -3,6 +3,8 @@
 #include "Sprite.h"
 #include "Object3d.h"
 
+#include "Camera.h"
+
 class GamePlayScene:public BaseScene
 {
 public:
@@ -15,6 +17,8 @@ public:
 
     void Draw() override;
     void DrawUI() override;
+
+    Camera* camera = nullptr; //ƒJƒƒ‰
 
 private:
 

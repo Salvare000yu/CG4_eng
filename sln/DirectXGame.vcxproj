@@ -148,11 +148,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="FbxModel.cpp" />
-    <ClCompile Include="GameBass.cpp" />
+    <ClCompile Include="GameBase.cpp" />
     <ClCompile Include="GamePlayScene.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="BaseScene.cpp" />
@@ -216,11 +217,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="DirectXCommon.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="FbxModel.h" />
-    <ClInclude Include="GameBass.h" />
+    <ClInclude Include="GameBase.h" />
     <ClInclude Include="GamePlayScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="BaseScene.h" />

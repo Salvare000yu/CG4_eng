@@ -8,6 +8,8 @@
 #include <string>
 #include "Model.h"
 
+#include "Camera.h"
+
 /// <summary>
 /// 3Dオブジェクト
 /// </summary>
@@ -51,8 +53,7 @@ public: // 静的メンバ関数
 	/// <param name="window_width">画面幅</param>
 	/// <param name="window_height">画面高さ</param>
 	/// <returns>成否</returns>
-	static bool StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdList,
-		int window_width, int window_height);
+	static bool StaticInitialize(ID3D12Device* device, Camera* camera = nullptr);
 
 	/// <summary>
 	/// グラフィックパイプラインの生成
@@ -62,7 +63,7 @@ public: // 静的メンバ関数
 	/// <summary>
 	/// 描画前処理
 	/// </summary>
-	static void PreDraw();
+	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
 	/// 描画後処理
@@ -79,59 +80,75 @@ public: // 静的メンバ関数
 	/// 視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	static const XMFLOAT3& GetEye() { return eye; }
+	//static const XMFLOAT3& GetEye() { return eye; }
 
 	/// <summary>
 	/// 視点座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	static void SetEye(XMFLOAT3 eye);
+	//static void SetEye(XMFLOAT3 eye);
 
 	/// <summary>
 	/// 注視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	static const XMFLOAT3& GetTarget() { return target; }
+//static const XMFLOAT3& GetTarget() { return target; }
 
 	/// <summary>
 	/// 注視点座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>
-	static void SetTarget(XMFLOAT3 target);
+	//static void SetTarget(XMFLOAT3 target);
 
 	/// <summary>
 	/// ベクトルによる移動
 	/// </summary>
 	/// <param name="move">移動量</param>
-	static void CameraMoveVector(XMFLOAT3 move);
+	//static void CameraMoveVector(XMFLOAT3 move);
 
 	/// <summary>
 	/// ベクトルによる視点移動
 	/// </summary>
 	/// <param name="move">移動量</param>
-	static void CameraMoveEyeVector(XMFLOAT3 move);
+	//static void CameraMoveEyeVector(XMFLOAT3 move);
+
+	/// <summary>
+	/// カメラセット
+	/// </summary>
+	/// <param name="camera"></param>
+	static void SetCamera(Camera* camera)
+	{
+		Object3d::camera = camera;
+	}
 
 private: // 静的メンバ変数
+
+	//カメラ初期化
+	static void InitializeCamera(int window_width, int window_height);
+
 	// デバイス
 	static ID3D12Device* device;
 	// コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList;
 	// テクスチャあり用パイプライン
 	static PipelineSet pipelineSet;
-	// ビュー行列
-	static XMMATRIX matView;
-	// 射影行列
-	static XMMATRIX matProjection;
-	// 視点座標
-	static XMFLOAT3 eye;
-	// 注視点座標
-	static XMFLOAT3 target;
-	// 上方向ベクトル
-	static XMFLOAT3 up;
-	// ビルボード行列
-	static XMMATRIX matBillboard;
-	// Y軸回りビルボード行列
-	static XMMATRIX matBillboardY;
+	//// ビュー行列
+	//static XMMATRIX matView;
+	//// 射影行列
+	//static XMMATRIX matProjection;
+	//// 視点座標
+	//static XMFLOAT3 eye;
+	//// 注視点座標
+	//static XMFLOAT3 target;
+	//// 上方向ベクトル
+	//static XMFLOAT3 up;
+	//// ビルボード行列
+	//static XMMATRIX matBillboard;
+	//// Y軸回りビルボード行列
+	//static XMMATRIX matBillboardY;
+
+	// カメラ
+	static Camera* camera;
 
 private:// 静的メンバ関数
 
@@ -140,12 +157,12 @@ private:// 静的メンバ関数
 	/// </summary>
 	/// <param name="window_width">画面横幅</param>
 	/// <param name="window_height">画面縦幅</param>
-	static void InitializeCamera(int window_width, int window_height);
+	//static void InitializeCamera(int window_width, int window_height);
 
 	/// <summary>
 	/// ビュー行列を更新
 	/// </summary>
-	static void UpdateViewMatrix();
+	//static void UpdateViewMatrix();
 
 public: // メンバ関数
 	bool Initialize();

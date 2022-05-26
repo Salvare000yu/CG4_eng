@@ -1,7 +1,7 @@
 ﻿//フレームワーク旧
-#include "GameBass.h"
+#include "GameBase.h"
 
-void GameBass::Run()
+void GameBase::Run()
 {
     Initialize();
 
@@ -23,7 +23,7 @@ void GameBass::Run()
     Finalize();
 }
 
-void GameBass::Initialize()
+void GameBase::Initialize()
 {
 
     // FbxManager* fbxManager = FbxManager::Create();
@@ -39,7 +39,7 @@ void GameBass::Initialize()
     // DirectX初期化処理　ここから
    // HRESULT result;
     //DirectXの初期化
-    dxCommon = new DirectXCommon();
+    dxCommon = DirectXCommon::GetInstance();
     dxCommon->Initialize(winApp);
 
     // スプライト共通部分初期化
@@ -59,6 +59,8 @@ void GameBass::Initialize()
     // デバッグテキスト初期化
     debugText->Initialize(spriteCommon, debugTextTexNumber);
 
+    camera = new Camera(WinApp::window_width, WinApp::window_height);
+
     //入力の初期化
     input = Input::GetInstance();
     input->Initialize(winApp);
@@ -68,7 +70,7 @@ void GameBass::Initialize()
     audio->Initialize();
 
     //3dオブジェクト静的初期化
-    Object3d::StaticInitialize(dxCommon->GetDevice(), dxCommon->GetCmdList(),WinApp::window_width, WinApp::window_height);
+    Object3d::StaticInitialize(dxCommon->GetDevice(), camera);
 
     //シーンマネージャーの生成
     sceneManager_ = new SceneManager();
@@ -77,12 +79,13 @@ void GameBass::Initialize()
     FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
 }
 
-void GameBass::Finalize()
+void GameBase::Finalize()
 {
-    //FbxLoader::GetInstance()->Finalize();
 
     //シーンマネージャ解放
     delete sceneManager_;
+
+    FbxLoader::GetInstance()->Finalize();
 
     //デバッグテキスト解放
     debugText->Finalize();
@@ -91,7 +94,7 @@ void GameBass::Finalize()
     audio->Finalize();
 
     //DirectX解放
-    delete dxCommon;
+    //delete dxCommon;
 
     //windowsAPIの終了処理
     winApp->Finalize();
@@ -100,7 +103,7 @@ void GameBass::Finalize()
     delete winApp;
 }
 
-void GameBass::Update()
+void GameBase::Update()
 {
 #pragma region ウィンドウメッセージ処理
     //// メッセージがある？
@@ -127,7 +130,7 @@ void GameBass::Update()
     sceneManager_->Update();
 }
 
-void GameBass::Draw()
+void GameBase::Draw()
 {
 #pragma region グラフィックスコマンド
 

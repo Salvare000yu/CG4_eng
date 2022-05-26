@@ -7,6 +7,12 @@
 
 using namespace Microsoft::WRL;
 
+DirectXCommon* DirectXCommon::GetInstance()
+{
+    static DirectXCommon dxCom{};
+    return &dxCom;
+}
+
 void DirectXCommon::Initialize(WinApp* winApp)
 {
 

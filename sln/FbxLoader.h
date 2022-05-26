@@ -34,18 +34,18 @@ public:
 	void Finalize();
 
 	/// <summary>
-/// ファイルからFBXモデル読み込み
-/// </summary>
+	/// ファイルからFBXモデル読み込み
+	/// </summary>
 	void LoadModelFromFile(const string& modelName);
 
-/// <summary>
-/// 再帰的にノード構成を解析
-/// </summary>　
-	void ParseNodeRecursive(FbxModel* fbxModel, FbxNode* fbxNode,Node* parent=nullptr);
+	/// <summary>
+	/// 再帰的にノード構成を解析
+	/// </summary>　
+	void ParseNodeRecursive(FbxModel* fbxModel, FbxNode* fbxNode, Node* parent = nullptr);
 
-/// <summary>
-/// メッシュ読み取り
-/// </summary>
+	/// <summary>
+	/// メッシュ読み取り
+	/// </summary>
 	void ParseMesh(FbxModel* fbxModel, FbxNode* fbxNode);
 
 	//頂点座標読み取り

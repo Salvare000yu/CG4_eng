@@ -103,8 +103,8 @@ void TitleScene::Update()
 
     }
 
- /*   DebugText::GetInstance()->Print("Hello,DirectX!!", 200, 100);
-    DebugText::GetInstance()->Print("nihon kougakuin!", 200, 200, 2.0f);*/
+    DebugText::GetInstance()->Print("SPACE:PLAYSCENE", 450, 100,3.0f);
+    //DebugText::GetInstance()->Print("nihon kougakuin!", 200, 200, 2.0f);
 
     ////3dobj
     //object3d_1->Update();

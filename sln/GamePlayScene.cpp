@@ -4,10 +4,19 @@
 #include "Input.h"
 #include "DebugText.h"
 #include "FbxLoader.h"
+#include "DirectXCommon.h"
 
 void GamePlayScene::Initialize()
 {
 #pragma region 描画初期化処理
+
+    camera = new Camera(WinApp::window_width, WinApp::window_height);
+
+    camera->SetTarget({ 0,0,0 });
+    camera->SetEye({ 0,10,-10 });
+
+    // カメラセット
+    Object3d::SetCamera(camera);
 
     //---objからモデルデータ読み込み---
     model_1 = Model::LoadFromOBJ("ground");
@@ -22,17 +31,19 @@ void GamePlayScene::Initialize()
     object3d_2->SetModel(model_2);
     object3d_3->SetModel(model_2);
 
+    object3d_1->SetScale({ 20.0f, 20.0f, 20.0f });
     object3d_2->SetScale({ 20.0f, 20.0f, 20.0f });
-    object3d_3->SetScale({ 30.0f, 30.0f, 30.0f });
+    object3d_3->SetScale({ 10.0f, 10.0f, 10.0f });
 
+    object3d_1->SetPosition({ 0,-1,5 });
     object3d_2->SetPosition({ 5,-1,5 });
-    object3d_3->SetPosition({ -5,-1,5 });
+    object3d_3->SetPosition({ 0,-1,5 });
 
     // 音声読み込み
     Audio::GetInstance()->LoadWave("Alarm01.wav");
 
     // 音声再生
-    Audio::GetInstance()->PlayWave("Alarm01.wav");//あってる？
+    //Audio::GetInstance()->PlayWave("Alarm01.wav");//
 
     // 3Dオブジェクトの数
     //const int OBJECT_NUM = 2;
@@ -40,7 +51,7 @@ void GamePlayScene::Initialize()
     //Object3d object3ds[OBJECT_NUM];
 
     // スプライト共通テクスチャ読み込み
-    SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/texuma.png");
+    SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/play.png");
 
     // スプライトの生成
     sprite = Sprite::Create(1, { 0,0 }, false, false);
@@ -71,7 +82,7 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Finalize()
 {
-
+    delete camera;
     //スプライト解放
     delete sprite;
 
@@ -106,6 +117,8 @@ void GamePlayScene::Update()
 
     }
 
+    // カメラをバックさせる
+    camera->SetEye({ 0,0,camera->GetEye().z - 1 });
 
     if (input->PushKey(DIK_D) || input->PushKey(DIK_A))
     {
@@ -114,6 +127,8 @@ void GamePlayScene::Update()
 
     DebugText::GetInstance()->Print("Hello,DirectX!!", 200, 100);
     DebugText::GetInstance()->Print("nihon kougakuin!", 200, 200, 2.0f);
+
+    camera->Update();
 
     //3dobj
     object3d_1->Update();
@@ -133,7 +148,7 @@ void GamePlayScene::Draw()
     sprite->Draw();
 
     //3dオブジェ描画前処理
-    Object3d::PreDraw();
+    Object3d::PreDraw(DirectXCommon::GetInstance()->GetCmdList());
 
     //3dオブジェ描画
     object3d_1->Draw();

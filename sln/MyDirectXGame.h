@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameBass.h"
+#include "GameBase.h"
 
 #include "FbxLoader.h"
 
@@ -11,7 +11,7 @@
 /// <summary>
 /// ゲーム固有クラス
 /// </summary>
-class MyDirectXGame:public GameBass
+class MyDirectXGame:public GameBase
 {
 public:
 
