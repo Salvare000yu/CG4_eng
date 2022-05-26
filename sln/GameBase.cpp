@@ -3,148 +3,148 @@
 
 void GameBase::Run()
 {
-    Initialize();
+	Initialize();
 
-    while (true)  // ゲームループ
-    {
-        //毎フレーム処理
-        Update();
+	while (true)  // ゲームループ
+	{
+		//毎フレーム処理
+		Update();
 
-        //終了リクエストで抜ける
-        if (endReq_)
-        {
-            break;
-        }
-        //描画
-        Draw();
+		//終了リクエストで抜ける
+		if (endReq_)
+		{
+			break;
+		}
+		//描画
+		Draw();
 
-    }
-    //終了
-    Finalize();
+	}
+	//終了
+	Finalize();
 }
 
 void GameBase::Initialize()
 {
 
-    // FbxManager* fbxManager = FbxManager::Create();
-     //windowsAPI初期化
-    winApp = new WinApp();
-    winApp->Initialize();
+	// FbxManager* fbxManager = FbxManager::Create();
+	 //windowsAPI初期化
+	winApp = WinApp::GetInstance();
+	winApp->Initialize();
 
-    MSG msg{};  // メッセージ
+	MSG msg{};  // メッセージ
 
 #pragma endregion WindowsAPI初期化
 
 #pragma region DirectX初期化処理
-    // DirectX初期化処理　ここから
+	// DirectX初期化処理　ここから
    // HRESULT result;
-    //DirectXの初期化
-    dxCommon = DirectXCommon::GetInstance();
-    dxCommon->Initialize(winApp);
+	//DirectXの初期化
+	dxCommon = DirectXCommon::GetInstance();
+	dxCommon->Initialize(winApp);
 
-    // スプライト共通部分初期化
-    spriteCommon = SpriteCommon::GetInstance();
-    spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
+	// スプライト共通部分初期化
+	spriteCommon = SpriteCommon::GetInstance();
+	spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
 
-    //const int SPRITES_NUM = 1;
-    //Sprite sprites[SPRITES_NUM];
+	//const int SPRITES_NUM = 1;
+	//Sprite sprites[SPRITES_NUM];
 
-      // デバッグテキスト
-    debugText = DebugText::GetInstance();
+	  // デバッグテキスト
+	debugText = DebugText::GetInstance();
 
-    // デバッグテキスト用のテクスチャ番号を指定
-    const int debugTextTexNumber = 0;
-    // デバッグテキスト用のテクスチャ読み込み
-    spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
-    // デバッグテキスト初期化
-    debugText->Initialize(spriteCommon, debugTextTexNumber);
+	// デバッグテキスト用のテクスチャ番号を指定
+	const int debugTextTexNumber = 0;
+	// デバッグテキスト用のテクスチャ読み込み
+	spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
+	// デバッグテキスト初期化
+	debugText->Initialize(spriteCommon, debugTextTexNumber);
 
-    camera = new Camera(WinApp::window_width, WinApp::window_height);
+	camera = new Camera(WinApp::window_width, WinApp::window_height);
 
-    //入力の初期化
-    input = Input::GetInstance();
-    input->Initialize(winApp);
+	//入力の初期化
+	input = Input::GetInstance();
+	input->Initialize(winApp);
 
-    //オーディオの初期化
-    audio = Audio::GetInstance();
-    audio->Initialize();
+	//オーディオの初期化
+	gameSound = GameSound::GetInstance();
+	gameSound->Initialize();
 
-    //3dオブジェクト静的初期化
-    Object3d::StaticInitialize(dxCommon->GetDevice(), camera);
+	//3dオブジェクト静的初期化
+	Object3d::StaticInitialize(dxCommon->GetDevice(), camera);
 
-    //シーンマネージャーの生成
-    sceneManager_ = new SceneManager();
+	//シーンマネージャーの生成
+	sceneManager_ = new SceneManager();
 
-    //fbx　初期化
-    FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
+	//fbx　初期化
+	FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
 }
 
 void GameBase::Finalize()
 {
 
-    //シーンマネージャ解放
-    delete sceneManager_;
+	//シーンマネージャ解放
+	delete sceneManager_;
 
-    FbxLoader::GetInstance()->Finalize();
+	FbxLoader::GetInstance()->Finalize();
 
-    //デバッグテキスト解放
-    debugText->Finalize();
+	//デバッグテキスト解放
+	debugText->Finalize();
 
-    //オーディオ解放
-    audio->Finalize();
+	//オーディオ解放
+	gameSound->Finalize();
 
-    //DirectX解放
-    //delete dxCommon;
+	//DirectX解放
+	//delete dxCommon;
 
-    //windowsAPIの終了処理
-    winApp->Finalize();
+	//windowsAPIの終了処理
+	winApp->Finalize();
 
-    //windowsAPI解放
-    delete winApp;
+	//windowsAPI解放
+	//delete winApp;
 }
 
 void GameBase::Update()
 {
 #pragma region ウィンドウメッセージ処理
-    //// メッセージがある？
-    //if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-    //    TranslateMessage(&msg); // キー入力メッセージの処理
-    //    DispatchMessage(&msg); // プロシージャにメッセージを送る
-    //}
+	//// メッセージがある？
+	//if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+	//    TranslateMessage(&msg); // キー入力メッセージの処理
+	//    DispatchMessage(&msg); // プロシージャにメッセージを送る
+	//}
 
-    //// ✖ボタンで終了メッセージが来たらゲームループを抜ける
-    //if (msg.message == WM_QUIT) {
-    //    break;
-    //}
-        //windowsのメッセージ処理
-    if (winApp->ProcessMessage()) {
-        //ゲームループ抜ける
-        endReq_ = true;
-        return;
-    }
+	//// ✖ボタンで終了メッセージが来たらゲームループを抜ける
+	//if (msg.message == WM_QUIT) {
+	//    break;
+	//}
+		//windowsのメッセージ処理
+	if (winApp->ProcessMessage()) {
+		//ゲームループ抜ける
+		endReq_ = true;
+		return;
+	}
 #pragma endregion ウィンドウメッセージ処理
-    //入力更新
-    input->Update();
+	//入力更新
+	input->Update();
 
-    //シーン更新
-    sceneManager_->Update();
+	//シーン更新
+	sceneManager_->Update();
 }
 
 void GameBase::Draw()
 {
 #pragma region グラフィックスコマンド
 
-    //描画前処理
-    dxCommon->PreDraw();
+	//描画前処理
+	dxCommon->PreDraw();
 
-    //シーン描画
-    sceneManager_->Draw();
+	//シーン描画
+	sceneManager_->Draw();
 
-    // デバッグテキスト描画
-    debugText->DrawAll();
+	// デバッグテキスト描画
+	debugText->DrawAll();
 
-    // ４．描画コマンドここまで
+	// ４．描画コマンドここまで
 
-    //描画後処理
-    dxCommon->PostDraw();
+	//描画後処理
+	dxCommon->PostDraw();
 }

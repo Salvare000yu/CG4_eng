@@ -7,7 +7,7 @@
 #include "Model.h"
 #include "Sprite.h"
 #include "DebugText.h"
-#include "Audio.h"
+#include "GameSound.h"
 #include "SceneManager.h"
 #include "FbxLoader.h"
 
@@ -49,7 +49,7 @@ protected:
     Input* input = nullptr;
     WinApp* winApp = nullptr;
     DirectXCommon* dxCommon = nullptr;
-    Audio* audio = nullptr;
+    GameSound* gameSound = nullptr;
     DebugText* debugText = nullptr;
     SpriteCommon* spriteCommon = nullptr;
     SceneManager* sceneManager_ = nullptr;

@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="DirectXCommon.cpp" />
@@ -216,7 +216,7 @@
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio.h" />
+    <ClInclude Include="GameSound.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="DirectXCommon.h" />

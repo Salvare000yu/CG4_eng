@@ -3,10 +3,17 @@
 #pragma once
 class WinApp
 {
+	WinApp(const WinApp& winApp) = delete;
+	WinApp& operator=(const WinApp& winApp) = delete;
+
+	WinApp() {};
+
 public://静的メンバ関数
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 public://メンバ関数
+	static WinApp* GetInstance();
+
 	//初期化
 	void Initialize();
 	//更新

@@ -5,30 +5,32 @@
 
 #include "Camera.h"
 
-class GamePlayScene:public BaseScene
+#include <memory>
+
+class GamePlayScene :public BaseScene
 {
 public:
 
-    void Initialize() override;
+	void Initialize() override;
 
-    void Finalize() override;
+	void Finalize() override;
 
-    void Update() override;
+	void Update() override;
 
-    void Draw() override;
-    void DrawUI() override;
+	void Draw() override;
+	void DrawUI() override;
 
-    Camera* camera = nullptr; //ÉJÉÅÉâ
+	std::unique_ptr<Camera> camera; //ÉJÉÅÉâ
 
 private:
 
-    Sprite* sprite = nullptr;
+	std::unique_ptr < Sprite> sprite = nullptr;
 
-    Model* model_1 = nullptr;
-    Model* model_2 = nullptr;
+	std::unique_ptr < Model> model_1 = nullptr;
+	std::unique_ptr < Model> model_2 = nullptr;
 
-    Object3d* object3d_1 = nullptr;
-    Object3d* object3d_2 = nullptr;
-    Object3d* object3d_3 = nullptr;
+	std::unique_ptr < Object3d> object3d_1 = nullptr;
+	std::unique_ptr < Object3d> object3d_2 = nullptr;
+	std::unique_ptr < Object3d> object3d_3 = nullptr;
 };
 

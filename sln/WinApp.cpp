@@ -12,6 +12,12 @@ LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
+WinApp* WinApp::GetInstance()
+{
+    static WinApp winApp;
+    return &winApp;
+}
+
 void WinApp::Initialize()
 {
 #pragma region WindowsAPIèâä˙âª
