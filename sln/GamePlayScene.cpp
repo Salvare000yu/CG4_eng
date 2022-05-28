@@ -5,6 +5,7 @@
 #include "DebugText.h"
 #include "FbxLoader.h"
 #include "DirectXCommon.h"
+#include "EndScene.h"
 
 #include <DirectXMath.h>
 using namespace DirectX;
@@ -45,9 +46,10 @@ void GamePlayScene::Initialize()
 	// 音声読み込み
 	GameSound::GetInstance()->LoadWave("A_rhythmaze_125.wav");
 	GameSound::GetInstance()->LoadWave("theworld_audio_avisyuturyoku.wav");
+	GameSound::GetInstance()->LoadWave("muda_diego.wav");
+	GameSound::GetInstance()->LoadWave("oredakenojikan.wav");
 	// 音声再生 鳴らしたいとき
 	GameSound::GetInstance()->PlayWave("A_rhythmaze_125.wav");
-	GameSound::GetInstance()->PlayWave("theworld_audio_avisyuturyoku.wav");
 	// 3Dオブジェクトの数
 	//const int OBJECT_NUM = 2;
 
@@ -90,12 +92,10 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
-	Input* input = Input::GetInstance();
+	//トリガーキー使う
+	bool TriggerKey(UINT index);
 
-	if (input->PushKey(DIK_0)) // 数字の0キーが押されていたら
-	{
-		OutputDebugStringA("Hit 0\n");  // 出力ウィンドウに「Hit 0」と表示
-	}
+	Input* input = Input::GetInstance();
 
 	float clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
 
@@ -121,9 +121,16 @@ void GamePlayScene::Update()
 	const bool inputS = input->PushKey(DIK_S);
 	const bool inputA = input->PushKey(DIK_A);
 	const bool inputD = input->PushKey(DIK_D);
-	const bool inputE = input->PushKey(DIK_E);
+	const bool inputQ = input->PushKey(DIK_Q);
 	const bool inputZ = input->PushKey(DIK_Z);
-	if (inputW || inputS || inputA || inputD || inputE || inputZ)
+	const bool inputT = input->PushKey(DIK_T);
+
+	const bool TriggerJ = input->TriggerKey(DIK_J);
+	const bool TriggerM = input->TriggerKey(DIK_M);
+	const bool TriggerK = input->TriggerKey(DIK_K);
+	const bool TriggerE = input->TriggerKey(DIK_E);
+
+	if (inputW || inputS || inputA || inputD || inputQ || inputZ)
 	{
 		constexpr float moveSpeed = 1;
 		if (inputS) {
@@ -146,7 +153,7 @@ void GamePlayScene::Update()
 			camera->MoveEyeVector(XMFLOAT3(moveSpeed, 0, 0));
 			camera->SetTarget(XMFLOAT3(camera->GetTarget().x + moveSpeed, camera->GetTarget().y, camera->GetTarget().z));
 		}
-		if (inputE) {
+		if (inputQ) {
 			// カメラを上昇させる
 			camera->MoveEyeVector(XMFLOAT3(0, moveSpeed, 0));
 			camera->SetTarget(XMFLOAT3(camera->GetTarget().x, camera->GetTarget().y + moveSpeed, camera->GetTarget().z));
@@ -158,8 +165,40 @@ void GamePlayScene::Update()
 		}
 	}
 
+	if (TriggerJ)
+	{
+		//Jで音鳴らす
+		GameSound::GetInstance()->PlayWave("theworld_audio_avisyuturyoku.wav");
+	}
+	if (TriggerM)
+	{
+		//Mで音鳴らす
+		GameSound::GetInstance()->PlayWave("muda_diego.wav");
+	}
+	if (TriggerK)
+	{
+		//Kで音鳴らす
+		GameSound::GetInstance()->PlayWave("oredakenojikan.wav");
+	}
+
+	if (inputT) // Tキーが押されていたら
+	{
+		OutputDebugStringA("Hit !(^^)!\n");  // 出力ウィンドウに「Hit 0」と表示
+
+		//T押してる時表示
+		DebugText::GetInstance()->Print("Look at output window![Thank you for watching... !(^^)!]", 200, 50,1.5);
+	}
+
+	if (TriggerE)     // スペースキーが押されていたら
+	{
+		//シーン切り替え
+		BaseScene* scene = new EndScene();
+		sceneManager_->SetNextScene(scene);
+	}
+
 	DebugText::GetInstance()->Print("Hello,DirectX!!", 200, 100);
-	DebugText::GetInstance()->Print("WASD:front,back,right,left ZE:up,down", 200, 200, 2.0f);
+	DebugText::GetInstance()->Print("[WASD:front,back,right,left] [ZE:up,down] [T:outputwindow]", 200, 150, 1.0f);
+	DebugText::GetInstance()->Print("J:sound", 200, 200, 1.0f);
 
 	camera->Update();
 

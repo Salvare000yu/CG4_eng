@@ -206,7 +206,7 @@ void Object3d::PostDraw()
 	Object3d::cmdList = nullptr;
 }
 
-Object3d * Object3d::Create()
+Object3d* Object3d::Create()
 {
 	// 3Dオブジェクトのインスタンスを生成
 	Object3d* object3d = new Object3d();
@@ -307,5 +307,5 @@ void Object3d::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
 
 	// モデル描画
-	model->Draw(cmdList,1);
+	model->Draw(cmdList, 1);
 }

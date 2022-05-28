@@ -224,4 +224,3 @@ private: // メンバ変数
 	// ビルボード
 	bool isBillboard = false;
 };
-

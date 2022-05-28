@@ -1,6 +1,7 @@
 ﻿#include "MyDirectXGame.h"
 #include "GamePlayScene.h"
 #include "TitleScene.h"
+#include "EndScene.h"
 
 void MyDirectXGame::Initialize()
 {
