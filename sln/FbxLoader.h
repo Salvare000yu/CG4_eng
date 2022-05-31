@@ -36,7 +36,8 @@ public:
 	/// <summary>
 	/// ファイルからFBXモデル読み込み
 	/// </summary>
-	void LoadModelFromFile(const string& modelName);
+	//void LoadModelFromFile(const string& modelName);
+	FbxModel* LoadModelFromFile(const string& modelName);
 
 	/// <summary>
 	/// 再帰的にノード構成を解析

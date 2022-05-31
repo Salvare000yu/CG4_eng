@@ -6,6 +6,9 @@
 #include "FbxLoader.h"
 #include "DirectXCommon.h"
 #include "EndScene.h"
+#include "FbxObject3d.h"
+
+#include "safe_delete.h"
 
 #include <DirectXMath.h>
 using namespace DirectX;
@@ -19,8 +22,13 @@ void GamePlayScene::Initialize()
 	camera->SetTarget({ 0,5,0 });
 	camera->SetEye({ 0,5,-10 });
 
+	//デバイスをセット
+	FbxObject3d::SetDevice(DirectXCommon::GetInstance()->GetDevice());
 	// カメラセット
 	Object3d::SetCamera(camera.get());
+	//グラフィックスパイプライン生成
+	FbxObject3d::CreateGraphicsPipeline();
+	FbxObject3d::SetCamera(camera.get());
 
 	//---objからモデルデータ読み込み---
 	model_1.reset(Model::LoadFromOBJ("ground"));
@@ -42,6 +50,12 @@ void GamePlayScene::Initialize()
 	object3d_1->SetPosition({ 0,-1,5 });
 	object3d_2->SetPosition({ 5,-1,5 });
 	object3d_3->SetPosition({ 0,-1,5 });
+
+	fbxModel_1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
+	//----------FBX オブジェクト生成とモデルのセット-----------//
+	fbxObject_1 = new FbxObject3d;
+	fbxObject_1->Initialize();
+	fbxObject_1->SetModel(fbxModel_1);
 
 	// 音声読み込み
 	GameSound::GetInstance()->LoadWave("A_rhythmaze_125.wav");
@@ -76,9 +90,9 @@ void GamePlayScene::Initialize()
 	//}
 
 	//fbx モデル名指定してファイル読み込み
-	FbxLoader::GetInstance()->LoadModelFromFile(
-		"cube"
-	);
+	//FbxLoader::GetInstance()->LoadModelFromFile(
+	//	"cube"
+	//);
 
 #pragma endregion 描画初期化処理
 
@@ -87,7 +101,8 @@ void GamePlayScene::Initialize()
 
 void GamePlayScene::Finalize()
 {
-
+	safe_delete(fbxObject_1);
+	safe_delete(fbxModel_1);
 }
 
 void GamePlayScene::Update()
@@ -207,12 +222,18 @@ void GamePlayScene::Update()
 	object3d_2->Update();
 	object3d_3->Update();
 
+	// FBX Update
+	fbxObject_1->Update();
+
 	//スプライト更新
 	sprite->Update();
 }
 
 void GamePlayScene::Draw()
 {
+	// コマンドリストの取得
+	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCmdList();
+
 	//// スプライト共通コマンド
 	SpriteCommon::GetInstance()->PreDraw();
 	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
@@ -226,6 +247,12 @@ void GamePlayScene::Draw()
 	object3d_1->Draw();
 	object3d_2->Draw();
 	object3d_3->Draw();
+
+	// FBX3dオブジェクト描画
+	fbxObject_1->Draw(cmdList);
+
+	//パーティクル描画
+	//particleMan->Draw(cmdList);
 
 	//3dオブジェ描画後処理
 	Object3d::PostDraw();

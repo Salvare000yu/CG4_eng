@@ -13,6 +13,8 @@ public: // 定数の宣言
     static const int fontHeight = 18;       // フォント画像内1文字分の縦幅
     static const int fontLineCount = 14;    // フォント画像内1行分の文字数
 
+    int formatPrint(const SpriteCommon& spriteCommon, const float x, const float y, const float scale, DirectX::XMFLOAT4 color, const char* fmt, ...);
+
 public: // メンバ関数
     static DebugText* GetInstance();
 

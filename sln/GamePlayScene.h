@@ -5,6 +5,8 @@
 
 #include "Camera.h"
 
+#include "FbxObject3d.h"
+
 #include <memory>
 
 class GamePlayScene :public BaseScene
@@ -32,5 +34,8 @@ private:
 	std::unique_ptr < Object3d> object3d_1 = nullptr;
 	std::unique_ptr < Object3d> object3d_2 = nullptr;
 	std::unique_ptr < Object3d> object3d_3 = nullptr;
+
+	FbxModel* fbxModel_1 = nullptr;
+	FbxObject3d* fbxObject_1=nullptr;
 };
 

@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EndScene.cpp" />
+    <ClCompile Include="FbxObject3d.cpp" />
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DebugText.cpp" />
@@ -231,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EndScene.h" />
+    <ClInclude Include="FbxObject3d.h" />
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DebugText.h" />
@@ -245,6 +247,7 @@
     <ClInclude Include="MyDirectXGame.h" />
     <ClInclude Include="Object3d.h" />
     <ClInclude Include="PipelineSet.h" />
+    <ClInclude Include="safe_delete.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
