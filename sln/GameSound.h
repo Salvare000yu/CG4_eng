@@ -51,7 +51,7 @@ public:
     /// <summary>
     /// ‰Šú‰»
     /// </summary>
-    void Initialize(const std::string& directoryPath="Resources/");
+    void Initialize(const std::string& directoryPath="Resources/sound/");
 
     /// <summary>
     /// ‰ğ•úˆ—@I—¹

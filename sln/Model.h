@@ -11,6 +11,7 @@
 /// </summary>
 class Model
 {
+
 public:
 	// 頂点データ構造体
 	struct VertexPosNormalUv
@@ -64,7 +65,6 @@ public://静的メンバ関数
 	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParamIndexMaterial);
 
 	static void SetDevice(ID3D12Device* device) { Model::device = device; }
-
 
 private:
 	//借りるデバイス

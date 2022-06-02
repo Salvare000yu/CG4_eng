@@ -58,6 +58,24 @@ public: // メンバ関数
 	/// <param name="cmdList">コマンドリスト</param>
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
+	/// <summary>
+	/// スケールの設定
+	/// </summary>
+	/// <param name="position">スケール</param>
+	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
+
+	/// <summary>
+	/// 座標の設定
+	/// </summary>
+	/// <param name="position">座標</param>
+	void SetPosition(XMFLOAT3 position) { this->position = position; }
+
+	/// <summary>
+	/// 座標の取得
+	/// </summary>
+	/// <returns>座標</returns>
+	const XMFLOAT3& GetPosition() { return position; }
+
 private: // 静的メンバ変数
 	//デバイス
 	static ID3D12Device* device;

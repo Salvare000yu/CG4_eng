@@ -34,36 +34,47 @@ void GamePlayScene::Initialize()
 	model_1.reset(Model::LoadFromOBJ("ground"));
 	model_2.reset(Model::LoadFromOBJ("triangle_mat"));
 	//Model* model_3 = Model::LoadFromOBJ("chr_sword");
-	//---3dオブジェクト生成---
+	//------3dオブジェクト生成------//
 	object3d_1.reset(Object3d::Create());
 	object3d_2.reset(Object3d::Create());
 	object3d_3.reset(Object3d::Create());
-	//---3dオブジェクトに3dモデルを紐づける---
+	//------3dオブジェクトに3dモデルを紐づける------//
 	object3d_1->SetModel(model_1.get());
 	object3d_2->SetModel(model_2.get());
 	object3d_3->SetModel(model_2.get());
 
-	object3d_1->SetScale({ 20.0f, 20.0f, 20.0f });
+	//------object3dスケール------//
+	object3d_1->SetScale({ 100.0f, 20.0f, 500.0f });
 	object3d_2->SetScale({ 20.0f, 20.0f, 20.0f });
 	object3d_3->SetScale({ 10.0f, 10.0f, 10.0f });
 
-	object3d_1->SetPosition({ 0,-1,5 });
+	//------object3d位置------//
+	object3d_1->SetPosition({ 0,-1,0 });
 	object3d_2->SetPosition({ 5,-1,5 });
 	object3d_3->SetPosition({ 0,-1,5 });
 
 	fbxModel_1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 	//----------FBX オブジェクト生成とモデルのセット-----------//
 	fbxObject_1 = new FbxObject3d;
+
 	fbxObject_1->Initialize();
+
+	//------fbxセット------//
 	fbxObject_1->SetModel(fbxModel_1);
 
+	//------fbxスケール------//
+	fbxObject_1->SetScale({ 0.05f, 0.05f, 0.05f });
+
+	//------fbx位置------//
+	fbxObject_1->SetPosition({ 0,0,100 });
+
 	// 音声読み込み
-	GameSound::GetInstance()->LoadWave("A_rhythmaze_125.wav");
+	GameSound::GetInstance()->LoadWave("E_rhythmaze_128.wav");
 	GameSound::GetInstance()->LoadWave("theworld_audio_avisyuturyoku.wav");
 	GameSound::GetInstance()->LoadWave("muda_diego.wav");
 	GameSound::GetInstance()->LoadWave("oredakenojikan.wav");
 	// 音声再生 鳴らしたいとき
-	GameSound::GetInstance()->PlayWave("A_rhythmaze_125.wav");
+	GameSound::GetInstance()->PlayWave("E_rhythmaze_128.wav");
 	// 3Dオブジェクトの数
 	//const int OBJECT_NUM = 2;
 
@@ -213,7 +224,7 @@ void GamePlayScene::Update()
 
 	DebugText::GetInstance()->Print("Hello,DirectX!!", 200, 100);
 	DebugText::GetInstance()->Print("[WASD:front,back,right,left] [ZE:up,down] [T:outputwindow]", 200, 150, 1.0f);
-	DebugText::GetInstance()->Print("J:sound", 200, 200, 1.0f);
+	DebugText::GetInstance()->Print("JMK:sound", 200, 200, 1.0f);
 
 	camera->Update();
 
