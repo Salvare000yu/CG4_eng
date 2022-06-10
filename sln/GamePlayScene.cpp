@@ -55,6 +55,7 @@ void GamePlayScene::Initialize()
 
 	fbxModel_1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 	//----------FBX オブジェクト生成とモデルのセット-----------//
+
 	fbxObject_1 = new FbxObject3d;
 
 	fbxObject_1->Initialize();
@@ -63,10 +64,12 @@ void GamePlayScene::Initialize()
 	fbxObject_1->SetModel(fbxModel_1);
 
 	//------fbxスケール------//
-	fbxObject_1->SetScale({ 0.05f, 0.05f, 0.05f });
+	fbxObject_1->SetScale({ 10.0f, 10.0f, 10.0f });
 
 	//------fbx位置------//
 	fbxObject_1->SetPosition({ 0,0,100 });
+
+	fbxObject_1->PlayAnimation();
 
 	// 音声読み込み
 	GameSound::GetInstance()->LoadWave("E_rhythmaze_128.wav");
@@ -74,7 +77,7 @@ void GamePlayScene::Initialize()
 	GameSound::GetInstance()->LoadWave("muda_diego.wav");
 	GameSound::GetInstance()->LoadWave("oredakenojikan.wav");
 	// 音声再生 鳴らしたいとき
-	GameSound::GetInstance()->PlayWave("E_rhythmaze_128.wav");
+	//GameSound::GetInstance()->PlayWave("E_rhythmaze_128.wav");
 	// 3Dオブジェクトの数
 	//const int OBJECT_NUM = 2;
 
@@ -118,6 +121,7 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
+
 	//トリガーキー使う
 	bool TriggerKey(UINT index);
 
@@ -194,17 +198,18 @@ void GamePlayScene::Update()
 	if (TriggerJ)
 	{
 		//Jで音鳴らす
-		GameSound::GetInstance()->PlayWave("theworld_audio_avisyuturyoku.wav");
+		//GameSound::GetInstance()->PlayWave("E_rhythmaze_128.wav");
+		//GameSound::GetInstance()->PlayWave("theworld_audio_avisyuturyoku.wav");
 	}
 	if (TriggerM)
 	{
 		//Mで音鳴らす
-		GameSound::GetInstance()->PlayWave("muda_diego.wav");
+		//GameSound::GetInstance()->PlayWave("muda_diego.wav");
 	}
 	if (TriggerK)
 	{
 		//Kで音鳴らす
-		GameSound::GetInstance()->PlayWave("oredakenojikan.wav");
+		//GameSound::GetInstance()->PlayWave("oredakenojikan.wav");
 	}
 
 	if (inputT) // Tキーが押されていたら
@@ -282,6 +287,7 @@ void GamePlayScene::Draw()
 	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
 	//// スプライト描画
    // sprite->Draw();
+
 }
 
 void GamePlayScene::DrawUI()

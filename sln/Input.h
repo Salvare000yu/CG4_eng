@@ -35,6 +35,7 @@ public://メンバ関数
 	bool TriggerKey(BYTE keyNumber);
 
 private://メンバ変数
+
 	//キーボードのデバイス
 	ComPtr<IDirectInputDevice8> devkeyboard;
 
@@ -49,5 +50,6 @@ private://メンバ変数
 
 	//WindowsAPI
 	WinApp* winApp = nullptr;
+
 };
 

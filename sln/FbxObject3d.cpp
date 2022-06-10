@@ -1,5 +1,7 @@
 #include "FbxObject3d.h"
 #include <d3dcompiler.h>
+
+#include "FbxLoader.h"
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
@@ -18,6 +20,9 @@ void FbxObject3d::Initialize()
 {
 	HRESULT result;
 
+	//1フレーム分の時間を60FPSで設定
+	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
+
 	// 定数バッファの生成
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
@@ -27,7 +32,7 @@ void FbxObject3d::Initialize()
 		nullptr,
 		IID_PPV_ARGS(&constBuffTransform));
 
-	// 定数バッファの生成
+	// 定数バッファの生成 スキン
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD), 	// アップロード可能
 		D3D12_HEAP_FLAG_NONE,
@@ -174,7 +179,8 @@ void FbxObject3d::CreateGraphicsPipeline()
 	// CBV（座標変換行列用）
 	rootparams[0].InitAsConstantBufferView(0, 0, D3D12_SHADER_VISIBILITY_ALL);
 	// SRV（テクスチャ）
-	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, D3D12_SHADER_VISIBILITY_ALL);
+	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV, 
+		D3D12_SHADER_VISIBILITY_ALL);
 
 	//CBV　スキニング用
 	rootparams[2].InitAsConstantBufferView(3, 0, D3D12_SHADER_VISIBILITY_ALL);
@@ -202,6 +208,8 @@ void FbxObject3d::CreateGraphicsPipeline()
 
 void FbxObject3d::Update()
 {
+	HRESULT result;
+
 	XMMATRIX matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
@@ -228,8 +236,6 @@ void FbxObject3d::Update()
 	// カメラ座標
 	const XMFLOAT3& cameraPos = camera->GetEye();
 
-	HRESULT result;
-
 	// 定数バッファへデータ転送
 	ConstBufferDataTransform* constMap = nullptr;
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
@@ -239,6 +245,17 @@ void FbxObject3d::Update()
 		constMap->world = modelTransform * matWorld;
 		constMap->cameraPos = cameraPos;
 		constBuffTransform->Unmap(0, nullptr);
+	}
+	// アニメーション
+	if (isPlay)
+	{
+		// 1フレーム進める
+		currentTime += frameTime;
+		// 最後まで再生したら先頭に戻す
+		if (currentTime > endTime)
+		{
+			currentTime = startTime;
+		}
 	}
 
 	//ボーン配列
@@ -253,13 +270,17 @@ void FbxObject3d::Update()
 		XMMATRIX matCurrentPose;
 		//今の姿勢行列を取得
 		FbxAMatrix fbxCurrentPose = 
-			bones[i].fbxCluster->GetLink()->EvaluateGlobalTransform(0);
+			bones[i].fbxCluster->GetLink()->EvaluateGlobalTransform(currentTime);
 		//XMMATRIXに変換
 		FbxLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
 		//合成してスキニング行列に
-		constMapSkin->bones[i] = bones[i].invInitialPose * matCurrentPose;
+		constMapSkin->bones[i] = fbxModel->GetModelTransform() *
+			bones[i].invInitialPose
+			* matCurrentPose
+			* XMMatrixInverse(nullptr, fbxModel->GetModelTransform());
 	}
 	constBuffSkin->Unmap(0, nullptr);
+
 }
 
 void FbxObject3d::Draw(ID3D12GraphicsCommandList* cmdList)
@@ -283,4 +304,24 @@ void FbxObject3d::Draw(ID3D12GraphicsCommandList* cmdList)
 
 	// モデル描画
 	fbxModel->Draw(cmdList);
+}
+
+void FbxObject3d::PlayAnimation()
+{
+	FbxScene* fbxScene = fbxModel->GetFbxScene();
+	//0番のアニメーション取得
+	FbxAnimStack* animstack = fbxScene->GetSrcObject<FbxAnimStack>(0);
+	//アニメーション名前取得
+	const char* animstackname = animstack->GetName();
+	//アニメーションの時間情報
+	FbxTakeInfo* takeinfo = fbxScene->GetTakeInfo(animstackname);
+
+	//開始時間取得
+	startTime = takeinfo->mLocalTimeSpan.GetStart();
+	//終了時間取得
+	endTime = takeinfo->mLocalTimeSpan.GetStop();
+	//開始時間に合わせる
+	currentTime = startTime;
+	//再生中状態にする
+	isPlay = true;
 }

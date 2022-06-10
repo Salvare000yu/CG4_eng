@@ -87,6 +87,11 @@ public: // メンバ関数
 	/// <returns>座標</returns>
 	const XMFLOAT3& GetPosition() { return position; }
 
+	/// <summary>
+	/// アニメーション開始
+	/// </summary>
+	void PlayAnimation();
+
 private: // 静的メンバ変数
 	//デバイス
 	static ID3D12Device* device;
@@ -112,5 +117,15 @@ protected:
 	FbxModel* fbxModel = nullptr;
 	//定数バッファ(スキン)
 	ComPtr<ID3D12Resource> constBuffSkin;
+	//1フレームの時間
+	FbxTime frameTime;
+	//アニメーション開始時間
+	FbxTime startTime;
+	//アニメーション終了時間
+	FbxTime endTime;
+	//現在時間(アニメーション)
+	FbxTime currentTime;
+	//アニメ―ション再生中
+	bool isPlay = false;
 };
 
