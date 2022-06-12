@@ -76,6 +76,12 @@ public: // メンバ関数
 	void SetScale(XMFLOAT3 scale) { this->scale = scale; }
 
 	/// <summary>
+	/// 座標の取得
+	/// </summary>
+	/// <returns>座標</returns>
+	const XMFLOAT3& GetScale() { return scale; }
+
+	/// <summary>
 	/// 座標の設定
 	/// </summary>
 	/// <param name="position">座標</param>

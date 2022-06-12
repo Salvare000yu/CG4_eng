@@ -75,9 +75,6 @@ public:
     /// <param name="filename">WAVファイル名</param>
     void PlayWave(const std::string& filename);
 
-    // 音声再生停止
-    static void SoundStopWave(GameSound* soundData);
-
 private:
     Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
     //サウンドデータ連想配列

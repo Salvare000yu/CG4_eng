@@ -7,7 +7,6 @@
 #include "DirectXCommon.h"
 #include "EndScene.h"
 #include "FbxObject3d.h"
-
 #include "safe_delete.h"
 
 #include <DirectXMath.h>
@@ -77,7 +76,7 @@ void GamePlayScene::Initialize()
 	GameSound::GetInstance()->LoadWave("muda_diego.wav");
 	GameSound::GetInstance()->LoadWave("oredakenojikan.wav");
 	// 音声再生 鳴らしたいとき
-	//GameSound::GetInstance()->PlayWave("E_rhythmaze_128.wav");
+	GameSound::GetInstance()->PlayWave("E_rhythmaze_128.wav");
 	// 3Dオブジェクトの数
 	//const int OBJECT_NUM = 2;
 
@@ -117,6 +116,12 @@ void GamePlayScene::Finalize()
 {
 	safe_delete(fbxObject_1);
 	safe_delete(fbxModel_1);
+}
+
+//重複させないために関数作成
+float movefbx1(float overlapmovepos=2.0f, float plus=1.0f)
+{
+	return overlapmovepos + plus;
 }
 
 void GamePlayScene::Update()
@@ -159,6 +164,8 @@ void GamePlayScene::Update()
 	const bool TriggerM = input->TriggerKey(DIK_M);
 	const bool TriggerK = input->TriggerKey(DIK_K);
 	const bool TriggerE = input->TriggerKey(DIK_E);
+	const bool Trigger1 = input->TriggerKey(DIK_1);
+	const bool Trigger2 = input->TriggerKey(DIK_2);
 
 	if (inputW || inputS || inputA || inputD || inputQ || inputZ)
 	{
@@ -199,18 +206,80 @@ void GamePlayScene::Update()
 	{
 		//Jで音鳴らす
 		//GameSound::GetInstance()->PlayWave("E_rhythmaze_128.wav");
-		//GameSound::GetInstance()->PlayWave("theworld_audio_avisyuturyoku.wav");
+		GameSound::GetInstance()->PlayWave("theworld_audio_avisyuturyoku.wav");
 	}
 	if (TriggerM)
 	{
 		//Mで音鳴らす
-		//GameSound::GetInstance()->PlayWave("muda_diego.wav");
+		GameSound::GetInstance()->PlayWave("muda_diego.wav");
 	}
 	if (TriggerK)
 	{
 		//Kで音鳴らす
-		//GameSound::GetInstance()->PlayWave("oredakenojikan.wav");
+		GameSound::GetInstance()->PlayWave("oredakenojikan.wav");
 	}
+
+#pragma region 重複避ける練習
+#pragma 重複してる
+	//float overlapmovepos = 2.0f;
+	//float plus = 1.0f;
+	//float overlapdeviation = -2.5f;
+
+	//if (Trigger1)
+	//{
+	//	//1でFBX1が右上に動く
+	//	XMFLOAT3 position = fbxObject_1->GetPosition();
+	//	if (Trigger1)
+	//	{
+	//		//overlapmoveposとplusを足した値分動く
+	//	position.x += overlapmovepos+ plus;
+	//	position.y += overlapmovepos+ plus;
+	//	}
+	//	fbxObject_1->SetPosition(position);
+	//}
+
+	//if (Trigger2)
+	//{
+	//	//2でFBX1が右上に動く(処理は同じだがこちらは移動距離に×-2.5)
+	//	XMFLOAT3 position = fbxObject_1->GetPosition();
+	//	if (Trigger2)
+	//	{
+	//		//overlapmovepos+plusにoverlapdeviationをかけた値分動く
+	//		position.x += overlapmovepos+ plus * overlapdeviation;
+	//		position.y += overlapmovepos+ plus * overlapdeviation;
+	//	}
+	//	fbxObject_1->SetPosition(position);
+	//}
+#pragma 重複してない
+	float overlapdeviation = -2.5f;
+
+	if (Trigger1)
+	{
+		//1でFBX1が右上に動く
+		XMFLOAT3 position = fbxObject_1->GetPosition();
+		if (Trigger1)
+		{
+			//overlapmoveposとplusを足した関数movefbx1の値分動く
+			position.x += movefbx1();
+			position.y += movefbx1();;
+		}
+		fbxObject_1->SetPosition(position);
+	}
+
+	if (Trigger2)
+	{
+		//2でFBX1が右上に動く(処理は同じだがこちらは移動距離に×-2.5)
+		XMFLOAT3 position = fbxObject_1->GetPosition();
+		if (Trigger2)
+		{
+			//overlapmoveposとplusを足した関数movefbx1にoverlapdeviationをかけた値分動く
+			position.x += movefbx1() * overlapdeviation;
+			position.y += movefbx1() * overlapdeviation;
+		}
+		fbxObject_1->SetPosition(position);
+	}
+
+#pragma endregion 重複練習終わり
 
 	if (inputT) // Tキーが押されていたら
 	{
@@ -229,6 +298,7 @@ void GamePlayScene::Update()
 
 	DebugText::GetInstance()->Print("Hello,DirectX!!", 200, 100);
 	DebugText::GetInstance()->Print("[WASD:front,back,right,left] [ZE:up,down] [T:outputwindow]", 200, 150, 1.0f);
+	DebugText::GetInstance()->Print("[12:fbx1 move juuhukurenshuu]", 200, 170, 1.0f);
 	DebugText::GetInstance()->Print("JMK:sound", 200, 200, 1.0f);
 
 	camera->Update();
