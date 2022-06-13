@@ -26,14 +26,17 @@ public:
 
 private:
 
-	std::unique_ptr < Sprite> sprite = nullptr;
+	std::unique_ptr < Sprite> sprite_back = nullptr;
 
 	std::unique_ptr < Model> model_1 = nullptr;
 	std::unique_ptr < Model> model_2 = nullptr;
+	std::unique_ptr < Model> model_3 = nullptr;
+	std::unique_ptr < Model> model_ban = nullptr;
 
 	std::unique_ptr < Object3d> object3d_1 = nullptr;
 	std::unique_ptr < Object3d> object3d_2 = nullptr;
 	std::unique_ptr < Object3d> object3d_3 = nullptr;
+	std::unique_ptr < Object3d> object3d_ban = nullptr;
 
 	FbxModel* fbxModel_1 = nullptr;
 	FbxObject3d* fbxObject_1=nullptr;

@@ -8,7 +8,7 @@ SpriteCommon* Sprite::GetInstance()
     return nullptr;
 }
 
-Sprite* Sprite::Create(UINT texNumber, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+Sprite* Sprite::Create(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 
     Sprite* instance = new Sprite();

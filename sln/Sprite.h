@@ -35,7 +35,7 @@ public:
 	/// <param name="anchorpoint">アンカーポイント</param>
 	/// <param name="isFlipX">x反転</param>
 	/// <param name="isFlipY">y反転</param>
-	static Sprite* Create(UINT texNumber, DirectX::XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	static Sprite* Create(UINT texNumber, DirectX::XMFLOAT3 position,DirectX::XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 	//初期化
 	void Initialize(UINT texNumber, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
@@ -56,13 +56,17 @@ public:
 	/// </summary>
 	void Update();
 
+	/// 座標の取得
+	const DirectX::XMFLOAT3& GetPosition() { return position_; }
+
 	void SetPosition(const DirectX::XMFLOAT3& position) { position_ = position; }
 	void SetRotation(float rotation) { rotation_ = rotation; }
 	void SetSize(const DirectX::XMFLOAT2& size) { size_ = size; }
 	void SetTexLeftTop(const DirectX::XMFLOAT2& texLeftTop) { texLeftTop_ = texLeftTop; }
 	void SetTexSize(const DirectX::XMFLOAT2& texSize) { texSize_ = texSize; }
 
-private:
+//private:
+protected:
 	//頂点バッファ;
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_;
 	//頂点バッファビュー;

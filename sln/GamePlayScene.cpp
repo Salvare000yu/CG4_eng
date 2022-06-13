@@ -10,6 +10,7 @@
 #include "safe_delete.h"
 
 #include <DirectXMath.h>
+
 using namespace DirectX;
 
 void GamePlayScene::Initialize()
@@ -18,8 +19,8 @@ void GamePlayScene::Initialize()
 
 	camera.reset(new Camera(WinApp::window_width, WinApp::window_height));
 
-	camera->SetTarget({ 0,5,0 });
-	camera->SetEye({ 0,5,-10 });
+	camera->SetTarget({ 0,50,-200 });
+	camera->SetEye({ 0,50,-210 });
 
 	//デバイスをセット
 	FbxObject3d::SetDevice(DirectXCommon::GetInstance()->GetDevice());
@@ -32,25 +33,30 @@ void GamePlayScene::Initialize()
 	//---objからモデルデータ読み込み---
 	model_1.reset(Model::LoadFromOBJ("ground"));
 	model_2.reset(Model::LoadFromOBJ("triangle_mat"));
+	model_ban.reset(Model::LoadFromOBJ("ban"));
 	//Model* model_3 = Model::LoadFromOBJ("chr_sword");
 	//------3dオブジェクト生成------//
 	object3d_1.reset(Object3d::Create());
-	object3d_2.reset(Object3d::Create());
+	object3d_2.reset(Object3d::Create());//右三角
 	object3d_3.reset(Object3d::Create());
+	object3d_ban.reset(Object3d::Create());
 	//------3dオブジェクトに3dモデルを紐づける------//
 	object3d_1->SetModel(model_1.get());
 	object3d_2->SetModel(model_2.get());
 	object3d_3->SetModel(model_2.get());
+	object3d_ban->SetModel(model_ban.get());
 
 	//------object3dスケール------//
 	object3d_1->SetScale({ 100.0f, 20.0f, 500.0f });
 	object3d_2->SetScale({ 20.0f, 20.0f, 20.0f });
 	object3d_3->SetScale({ 10.0f, 10.0f, 10.0f });
+	object3d_ban->SetScale({ 10.0f, 10.0f, 10.0f });
 
 	//------object3d位置------//
 	object3d_1->SetPosition({ 0,-1,0 });
-	object3d_2->SetPosition({ 5,-1,5 });
-	object3d_3->SetPosition({ 0,-1,5 });
+	object3d_2->SetPosition({ 5,35,5 });
+	object3d_3->SetPosition({ -5,30,5 });
+	object3d_ban->SetPosition({ 0,15,5 });
 
 	fbxModel_1 = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 	//----------FBX オブジェクト生成とモデルのセット-----------//
@@ -66,7 +72,7 @@ void GamePlayScene::Initialize()
 	fbxObject_1->SetScale({ 10.0f, 10.0f, 10.0f });
 
 	//------fbx位置------//
-	fbxObject_1->SetPosition({ 0,0,100 });
+	fbxObject_1->SetPosition({ 0,24,100 });
 
 	fbxObject_1->PlayAnimation();
 
@@ -86,7 +92,12 @@ void GamePlayScene::Initialize()
 	SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/play.png");
 
 	// スプライトの生成
-	sprite.reset(Sprite::Create(1, { 0,0 }, false, false));
+	sprite_back.reset(Sprite::Create(1, DirectX::XMFLOAT3(1, 1, 1), { 0,0 }, false, false));
+	//スプライトサイズ
+	sprite_back->SetSize({ 0,0 });
+	//スプライトポジション
+	sprite_back->SetPosition({ -11400,0,0 });
+
 	//for (int i = 0; i < 1; i++)
 	//{
 	//    int texNumber = 1;
@@ -119,7 +130,7 @@ void GamePlayScene::Finalize()
 }
 
 //重複させないために関数作成
-float movefbx1(float overlapmovepos=2.0f, float plus=1.0f)
+float movefbx1(float overlapmovepos = 2.0f, float plus = 1.0f)
 {
 	return overlapmovepos + plus;
 }
@@ -163,7 +174,8 @@ void GamePlayScene::Update()
 	const bool TriggerJ = input->TriggerKey(DIK_J);
 	const bool TriggerM = input->TriggerKey(DIK_M);
 	const bool TriggerK = input->TriggerKey(DIK_K);
-	const bool TriggerE = input->TriggerKey(DIK_E);
+	const bool TriggerE = input->TriggerKey(DIK_E);//未使用
+	const bool Trigger0 = input->TriggerKey(DIK_0);
 	const bool Trigger1 = input->TriggerKey(DIK_1);
 	const bool Trigger2 = input->TriggerKey(DIK_2);
 
@@ -286,14 +298,25 @@ void GamePlayScene::Update()
 		OutputDebugStringA("Hit !(^^)!\n");  // 出力ウィンドウに「Hit 0」と表示
 
 		//T押してる時表示
-		DebugText::GetInstance()->Print("Look at output window![Thank you for watching... !(^^)!]", 200, 50,1.5);
+		DebugText::GetInstance()->Print("Look at output window![Thank you for watching... !(^^)!]", 200, 50, 1.5);
 	}
 
-	if (TriggerE)     // スペースキーが押されていたら
+	if (Trigger0)     // スペースキーが押されていたら
 	{
 		//シーン切り替え
 		BaseScene* scene = new EndScene();
 		sceneManager_->SetNextScene(scene);
+	}
+
+	//バックスプライト動
+	for (int i = 0; i < 1; i++)
+	{
+		XMFLOAT3 position = sprite_back->GetPosition();
+
+		position.x+=5;
+		if (position.x == 0) { position.x = -11400; }
+
+		sprite_back->SetPosition(position);
 	}
 
 	DebugText::GetInstance()->Print("Hello,DirectX!!", 200, 100);
@@ -307,12 +330,13 @@ void GamePlayScene::Update()
 	object3d_1->Update();
 	object3d_2->Update();
 	object3d_3->Update();
+	object3d_ban->Update();
 
 	// FBX Update
 	fbxObject_1->Update();
 
 	//スプライト更新
-	sprite->Update();
+	sprite_back->Update();
 }
 
 void GamePlayScene::Draw()
@@ -324,7 +348,7 @@ void GamePlayScene::Draw()
 	SpriteCommon::GetInstance()->PreDraw();
 	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
 	//// スプライト描画
-	sprite->Draw();
+	sprite_back->Draw();
 
 	//3dオブジェ描画前処理
 	Object3d::PreDraw(DirectXCommon::GetInstance()->GetCmdList());
@@ -333,6 +357,7 @@ void GamePlayScene::Draw()
 	object3d_1->Draw();
 	object3d_2->Draw();
 	object3d_3->Draw();
+	object3d_ban->Draw();
 
 	// FBX3dオブジェクト描画
 	fbxObject_1->Draw(cmdList);
