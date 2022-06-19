@@ -4,7 +4,7 @@
 #include "Input.h"
 #include "DebugText.h"
 #include "FbxLoader.h"
-#include "DirectXCommon.h"
+#include "DxBase.h"
 #include "EndScene.h"
 #include "FbxObject3d.h"
 #include "safe_delete.h"
@@ -23,7 +23,7 @@ void GamePlayScene::Initialize()
 	camera->SetEye({ 0,50,-210 });
 
 	//デバイスをセット
-	FbxObject3d::SetDevice(DirectXCommon::GetInstance()->GetDevice());
+	FbxObject3d::SetDevice(DxBase::GetInstance()->GetDevice());
 	// カメラセット
 	Object3d::SetCamera(camera.get());
 	//グラフィックスパイプライン生成
@@ -92,7 +92,7 @@ void GamePlayScene::Initialize()
 	SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/play.png");
 
 	// スプライトの生成
-	sprite_back.reset(Sprite::Create(1, DirectX::XMFLOAT3(1, 1, 1), { 0,0 }, false, false));
+	sprite_back.reset(Sprite::Create(1, DirectX::XMFLOAT3(1, 1, 1), { 0,0 }, { 1,1,1,1 }, { 0, 0 }, false, false));
 	//スプライトサイズ
 	sprite_back->SetSize({ 0,0 });
 	//スプライトポジション
@@ -129,15 +129,39 @@ void GamePlayScene::Finalize()
 	safe_delete(fbxModel_1);
 }
 
+enum {
+	fbx1movePos = 2,
+	fbx1movePosPlus = 2,
+	obj2MAXPosY = 70,
+	obj2originPosY = 35,
+};
+
+void GamePlayScene::Obj2move()
+{
+	Input* input = Input::GetInstance();
+	const bool inputE = input->PushKey(DIK_E);
+
+	if (!inputE) return;
+	XMFLOAT3 position = object3d_2->GetPosition();
+	if (position.y <= obj2MAXPosY)
+	{
+		position.y++;
+	}
+	else
+	{
+		position.y = obj2originPosY;
+	}
+	object3d_2->SetPosition(position);
+}
+
 //重複させないために関数作成
-float movefbx1(float overlapmovepos = 2.0f, float plus = 1.0f)
+float movefbx1(const float overlapmovepos = fbx1movePos, const float plus = fbx1movePosPlus)
 {
 	return overlapmovepos + plus;
 }
 
 void GamePlayScene::Update()
 {
-
 	//トリガーキー使う
 	bool TriggerKey(UINT index);
 
@@ -170,11 +194,12 @@ void GamePlayScene::Update()
 	const bool inputQ = input->PushKey(DIK_Q);
 	const bool inputZ = input->PushKey(DIK_Z);
 	const bool inputT = input->PushKey(DIK_T);
+	//const bool inputE = input->PushKey(DIK_E);
 
 	const bool TriggerJ = input->TriggerKey(DIK_J);
 	const bool TriggerM = input->TriggerKey(DIK_M);
 	const bool TriggerK = input->TriggerKey(DIK_K);
-	const bool TriggerE = input->TriggerKey(DIK_E);//未使用
+	const bool TriggerE = input->TriggerKey(DIK_E);
 	const bool Trigger0 = input->TriggerKey(DIK_0);
 	const bool Trigger1 = input->TriggerKey(DIK_1);
 	const bool Trigger2 = input->TriggerKey(DIK_2);
@@ -273,7 +298,7 @@ void GamePlayScene::Update()
 		{
 			//overlapmoveposとplusを足した関数movefbx1の値分動く
 			position.x += movefbx1();
-			position.y += movefbx1();;
+			position.y += movefbx1();
 		}
 		fbxObject_1->SetPosition(position);
 	}
@@ -292,6 +317,7 @@ void GamePlayScene::Update()
 	}
 
 #pragma endregion 重複練習終わり
+	GamePlayScene::Obj2move();
 
 	if (inputT) // Tキーが押されていたら
 	{
@@ -309,11 +335,12 @@ void GamePlayScene::Update()
 	}
 
 	//バックスプライト動
+	//SPmove SPbackmoveobj;
 	for (int i = 0; i < 1; i++)
 	{
 		XMFLOAT3 position = sprite_back->GetPosition();
 
-		position.x+=5;
+		position.x += 5;
 		if (position.x == 0) { position.x = -11400; }
 
 		sprite_back->SetPosition(position);
@@ -323,7 +350,6 @@ void GamePlayScene::Update()
 	DebugText::GetInstance()->Print("[WASD:front,back,right,left] [ZE:up,down] [T:outputwindow]", 200, 150, 1.0f);
 	DebugText::GetInstance()->Print("[12:fbx1 move juuhukurenshuu]", 200, 170, 1.0f);
 	DebugText::GetInstance()->Print("JMK:sound", 200, 200, 1.0f);
-
 	camera->Update();
 
 	//3dobj
@@ -342,16 +368,16 @@ void GamePlayScene::Update()
 void GamePlayScene::Draw()
 {
 	// コマンドリストの取得
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCmdList();
+	ID3D12GraphicsCommandList* cmdList = DxBase::GetInstance()->GetCmdList();
 
 	//// スプライト共通コマンド
 	SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
+	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
 	//// スプライト描画
 	sprite_back->Draw();
 
 	//3dオブジェ描画前処理
-	Object3d::PreDraw(DirectXCommon::GetInstance()->GetCmdList());
+	Object3d::PreDraw(DxBase::GetInstance()->GetCmdList());
 
 	//3dオブジェ描画
 	object3d_1->Draw();
@@ -372,14 +398,14 @@ void GamePlayScene::Draw()
 
 	//for (int i = 0; i < _countof(object3ds); i++)
 	//{
-	//    DrawObject3d(&object3ds[i], dxCommon->GetCmdList(), basicDescHeap.Get(), vbView, ibView,
-	//        CD3DX12_GPU_DESCRIPTOR_HANDLE(basicDescHeap->GetGPUDescriptorHandleForHeapStart(), constantBufferNum, dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)),
+	//    DrawObject3d(&object3ds[i], dxBase->GetCmdList(), basicDescHeap.Get(), vbView, ibView,
+	//        CD3DX12_GPU_DESCRIPTOR_HANDLE(basicDescHeap->GetGPUDescriptorHandleForHeapStart(), constantBufferNum, dxBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)),
 	//        indices, _countof(indices));
 	//}
 
 	//// スプライト共通コマンド
 	SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
+	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
 	//// スプライト描画
    // sprite->Draw();
 

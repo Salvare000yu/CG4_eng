@@ -22,6 +22,8 @@ public:
 	void Draw() override;
 	void DrawUI() override;
 
+	void Obj2move();
+
 	std::unique_ptr<Camera> camera; //ƒJƒƒ‰
 
 private:

@@ -13,6 +13,12 @@ class Sprite
 {
 
 public:
+	/// <summary>
+/// コンストラクタ
+/// </summary>
+	Sprite(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 size, DirectX::XMFLOAT4 color,
+		DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
+
 	static SpriteCommon* GetInstance();
 
 	// 頂点データ
@@ -35,7 +41,8 @@ public:
 	/// <param name="anchorpoint">アンカーポイント</param>
 	/// <param name="isFlipX">x反転</param>
 	/// <param name="isFlipY">y反転</param>
-	static Sprite* Create(UINT texNumber, DirectX::XMFLOAT3 position,DirectX::XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
+	static Sprite* Create(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 size, DirectX::XMFLOAT4 color,
+		DirectX::XMFLOAT2 anchorpoint = { 0.5f,0.5f }, bool isFlipX = false, bool isFlipY = false);
 
 	//初期化
 	void Initialize(UINT texNumber, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);

@@ -44,7 +44,7 @@ void EndScene::Initialize()
 	SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/EndScene.png");
 
 	// スプライトの生成
-	sprite.reset(Sprite::Create(1, DirectX::XMFLOAT3(0,0,0), { 0, 0 }, false, false));
+	sprite.reset(Sprite::Create(1, DirectX::XMFLOAT3(0, 0, 0), {0,0}, {1,1,1,1}, { 0, 0 }, false, false));
 	//for (int i = 0; i < 1; i++)
 	//{
 	//    int texNumber = 1;
@@ -124,7 +124,7 @@ void EndScene::Draw()
 {
 	//// スプライト共通コマンド
 	SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
+	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
 	//// スプライト描画
 	sprite->Draw();
 
@@ -143,14 +143,14 @@ void EndScene::Draw()
 
 	//for (int i = 0; i < _countof(object3ds); i++)
 	//{
-	//    DrawObject3d(&object3ds[i], dxCommon->GetCmdList(), basicDescHeap.Get(), vbView, ibView,
-	//        CD3DX12_GPU_DESCRIPTOR_HANDLE(basicDescHeap->GetGPUDescriptorHandleForHeapStart(), constantBufferNum, dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)),
+	//    DrawObject3d(&object3ds[i], dxBase->GetCmdList(), basicDescHeap.Get(), vbView, ibView,
+	//        CD3DX12_GPU_DESCRIPTOR_HANDLE(basicDescHeap->GetGPUDescriptorHandleForHeapStart(), constantBufferNum, dxBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)),
 	//        indices, _countof(indices));
 	//}
 
 	//// スプライト共通コマンド
 	//SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
+	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
 	//// スプライト描画
 	//sprite->Draw();
 }

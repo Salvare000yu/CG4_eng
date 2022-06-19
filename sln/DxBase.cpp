@@ -1,4 +1,6 @@
-#include "DirectXCommon.h"
+//DirectXcommon
+
+#include "DxBase.h"
 
 #include <cassert>
 
@@ -7,13 +9,13 @@
 
 using namespace Microsoft::WRL;
 
-DirectXCommon* DirectXCommon::GetInstance()
+DxBase* DxBase::GetInstance()
 {
-    static DirectXCommon dxCom{};
+    static DxBase dxCom{};
     return &dxCom;
 }
 
-void DirectXCommon::Initialize(WinApp* winApp)
+void DxBase::Initialize(WinApp* winApp)
 {
 
     //null検出
@@ -37,7 +39,7 @@ void DirectXCommon::Initialize(WinApp* winApp)
 
 }
 
-void DirectXCommon::PreDraw()
+void DxBase::PreDraw()
 {
 
     // バックバッファの番号を取得（2つなので0番か1番）
@@ -68,7 +70,7 @@ void DirectXCommon::PreDraw()
 
 }
 
-void DirectXCommon::PostDraw()
+void DxBase::PostDraw()
 {
 
     // バックバッファの番号を取得
@@ -103,7 +105,7 @@ void DirectXCommon::PostDraw()
 
 }
 
-bool DirectXCommon::InitializeDevice()
+bool DxBase::InitializeDevice()
 {
     HRESULT result;
 
@@ -172,7 +174,7 @@ bool DirectXCommon::InitializeDevice()
     return true;
 }
 
-bool DirectXCommon::InitializeCommand()
+bool DxBase::InitializeCommand()
 {
     HRESULT result;
     // コマンドアロケータを生成
@@ -194,7 +196,7 @@ bool DirectXCommon::InitializeCommand()
     	return true;
 }
 
-bool DirectXCommon::InitializeSwapchain()
+bool DxBase::InitializeSwapchain()
 {
     // 各種設定をしてスワップチェーンを生成
     DXGI_SWAP_CHAIN_DESC1 swapchainDesc{};
@@ -224,7 +226,7 @@ bool DirectXCommon::InitializeSwapchain()
     return true;
 }
 
-bool DirectXCommon::InitializeRenderTargetView()
+bool DxBase::InitializeRenderTargetView()
 {
     HRESULT result;
 
@@ -260,7 +262,7 @@ bool DirectXCommon::InitializeRenderTargetView()
     return true;
 }
 
-bool DirectXCommon::InitializeDepthBuffer()
+bool DxBase::InitializeDepthBuffer()
 {
     HRESULT result;
 
@@ -299,7 +301,7 @@ bool DirectXCommon::InitializeDepthBuffer()
     return true;
 }
 
-bool DirectXCommon::InitializeFence()
+bool DxBase::InitializeFence()
 {
     HRESULT result = S_FALSE;
 

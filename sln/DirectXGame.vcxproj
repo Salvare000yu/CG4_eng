@@ -152,7 +152,7 @@
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DebugText.cpp" />
-    <ClCompile Include="DirectXCommon.cpp" />
+    <ClCompile Include="DxBase.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="FbxModel.cpp" />
     <ClCompile Include="GameBase.cpp" />
@@ -237,7 +237,7 @@
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DebugText.h" />
-    <ClInclude Include="DirectXCommon.h" />
+    <ClInclude Include="DxBase.h" />
     <ClInclude Include="FbxLoader.h" />
     <ClInclude Include="FbxModel.h" />
     <ClInclude Include="GameBase.h" />

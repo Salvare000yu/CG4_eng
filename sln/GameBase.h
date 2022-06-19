@@ -2,7 +2,7 @@
 
 #include "Input.h"
 #include "WinApp.h"
-#include "DirectXCommon.h"
+#include "DxBase.h"
 #include "Object3d.h"
 #include "Model.h"
 #include "Sprite.h"
@@ -48,7 +48,7 @@ protected:
     //ƒ|ƒCƒ“ƒ^Œn‚±‚±
     Input* input = nullptr;
     WinApp* winApp = nullptr;
-    DirectXCommon* dxCommon = nullptr;
+    DxBase* dxBase = nullptr;
     GameSound* gameSound = nullptr;
     DebugText* debugText = nullptr;
     SpriteCommon* spriteCommon = nullptr;

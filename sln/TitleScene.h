@@ -5,7 +5,9 @@
 #include "BaseScene.h"
 #include "Sprite.h"
 #include "Object3d.h"
+#include "SpriteCommon.h"
 #include <memory>
+#include "DxBase.h"
 
 class TitleScene :public BaseScene
 {
@@ -20,6 +22,7 @@ public:
 	void Draw() override;
 	void DrawUI() override;
 
+	DxBase* dxBase = nullptr;
 private:
 
 	std::unique_ptr < Sprite> sprite = nullptr;

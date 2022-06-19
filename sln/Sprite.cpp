@@ -8,14 +8,30 @@ SpriteCommon* Sprite::GetInstance()
     return nullptr;
 }
 
-Sprite* Sprite::Create(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+Sprite* Sprite::Create(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 size, 
+    DirectX::XMFLOAT4 color, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
 
-    Sprite* instance = new Sprite();
+    Sprite* instance = new Sprite(texNumber, position, size, color, anchorpoint, isFlipX, isFlipY);
     //インスタンス初期化
     instance->Initialize(texNumber, anchorpoint, isFlipX, isFlipY);
 
     return instance;
+}
+
+Sprite::Sprite(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 size,
+    DirectX::XMFLOAT4 color, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
+{
+    this->position_ = position;
+    this->size_ = size;
+    this->anchorpoint_ = anchorpoint;
+    this->matWorld_ = XMMatrixIdentity();
+    this->color_ = color;
+    this->texNumber_ = texNumber;
+    this->isFlipX_ = isFlipX;
+    this->isFlipY_ = isFlipY;
+    this->texSize_ = size;
+    this->isInvisible = false;
 }
 
 void Sprite::Initialize(UINT texNumber, DirectX::XMFLOAT2 anchorpoint, bool isFlipX,bool isFlipY)

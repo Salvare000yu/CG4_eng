@@ -39,12 +39,12 @@ void GameBase::Initialize()
 	// DirectX初期化処理　ここから
    // HRESULT result;
 	//DirectXの初期化
-	dxCommon = DirectXCommon::GetInstance();
-	dxCommon->Initialize(winApp);
+	dxBase = DxBase::GetInstance();
+	dxBase->Initialize(winApp);
 
 	// スプライト共通部分初期化
 	spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon->Initialize(dxCommon->GetDevice(), dxCommon->GetCmdList(), winApp->window_width, winApp->window_height);
+	spriteCommon->Initialize(dxBase->GetDevice(), dxBase->GetCmdList(), winApp->window_width, winApp->window_height);
 
 	//const int SPRITES_NUM = 1;
 	//Sprite sprites[SPRITES_NUM];
@@ -70,13 +70,13 @@ void GameBase::Initialize()
 	gameSound->Initialize();
 
 	//3dオブジェクト静的初期化
-	Object3d::StaticInitialize(dxCommon->GetDevice(), camera);
+	Object3d::StaticInitialize(dxBase->GetDevice(), camera);
 
 	//シーンマネージャーの生成
 	sceneManager_ = new SceneManager();
 
 	//fbx　初期化
-	FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
+	FbxLoader::GetInstance()->Initialize(dxBase->GetDevice());
 }
 
 void GameBase::Finalize()
@@ -94,7 +94,7 @@ void GameBase::Finalize()
 	gameSound->Finalize();
 
 	//DirectX解放
-	//delete dxCommon;
+	//delete dxBase;
 
 	//windowsAPIの終了処理
 	winApp->Finalize();
@@ -135,7 +135,7 @@ void GameBase::Draw()
 #pragma region グラフィックスコマンド
 
 	//描画前処理
-	dxCommon->PreDraw();
+	dxBase->PreDraw();
 
 	//シーン描画
 	sceneManager_->Draw();
@@ -146,5 +146,5 @@ void GameBase::Draw()
 	// ４．描画コマンドここまで
 
 	//描画後処理
-	dxCommon->PostDraw();
+	dxBase->PostDraw();
 }

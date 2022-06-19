@@ -1,3 +1,4 @@
+//directXcommon
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <dxgi1_6.h>
@@ -7,16 +8,16 @@
 #pragma once
 
 //directXäÓî’
-class DirectXCommon
+class DxBase
 {
 
-	DirectXCommon(const DirectXCommon& dxCommon) = delete;
-	DirectXCommon& operator=(const DirectXCommon& dxCommon) = delete;
+	DxBase(const DxBase& dxBase) = delete;
+	DxBase& operator=(const DxBase& dxBase) = delete;
 
-	DirectXCommon() {};
+	DxBase() {};
 
 public://ÉÅÉìÉoä÷êî
-	static DirectXCommon* GetInstance();
+	static DxBase* GetInstance();
 
 	void Initialize(WinApp* winApp);
 
@@ -62,8 +63,8 @@ private:
 
 	bool InitializeRenderTargetView();
 
-	bool DirectXCommon::InitializeDepthBuffer();
+	bool DxBase::InitializeDepthBuffer();
 
-	bool DirectXCommon::InitializeFence();
+	bool DxBase::InitializeFence();
 };
 

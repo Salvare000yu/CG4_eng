@@ -5,6 +5,10 @@
 #include "DebugText.h"
 #include "GamePlayScene.h"
 
+//#include "PostEffect.h"
+
+//PostEffect* postEffect = nullptr;
+
 void TitleScene::Initialize()
 {
 #pragma region 描画初期化処理
@@ -43,7 +47,7 @@ void TitleScene::Initialize()
 	SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/title_prac.png");
 
 	// スプライトの生成
-	sprite.reset( Sprite::Create(1, DirectX::XMFLOAT3(0,0,0), { 0, 0 }, false, false));
+	sprite.reset(Sprite::Create(1, DirectX::XMFLOAT3(0, 0, 0), {0,0}, {1,1,1,1}, { 0, 0 }, false, false));
 	//for (int i = 0; i < 1; i++)
 	//{
 	//    int texNumber = 1;
@@ -58,6 +62,12 @@ void TitleScene::Initialize()
 
 	//    sprites.push_back(sprite);
 	//}
+
+	//ポストエフェクト用テクスチャ読み込み
+	SpriteCommon::GetInstance()->LoadTexture(100, L"Resources/White1x1.png");
+	//ポストエフェクト初期化
+	//postEffect = new PostEffect();
+	//postEffect->Initialize(1, { 0, 0 }, false, false);
 
 #pragma endregion 描画初期化処理
 
@@ -76,6 +86,8 @@ void TitleScene::Finalize()
 	//delete object3d_3;
 	//delete model_1;
 	//delete model_2;
+
+	//delete postEffect;
 }
 
 void TitleScene::Update()
@@ -123,9 +135,12 @@ void TitleScene::Draw()
 {
 	//// スプライト共通コマンド
 	SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
+	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
 	//// スプライト描画
 	sprite->Draw();
+
+	//ポストエフェクトの描画
+	//postEffect->Draw(dxBase->GetCmdList());
 
 	////3dオブジェ描画前処理
 	//Object3d::PreDraw();
@@ -142,14 +157,14 @@ void TitleScene::Draw()
 
 	//for (int i = 0; i < _countof(object3ds); i++)
 	//{
-	//    DrawObject3d(&object3ds[i], dxCommon->GetCmdList(), basicDescHeap.Get(), vbView, ibView,
-	//        CD3DX12_GPU_DESCRIPTOR_HANDLE(basicDescHeap->GetGPUDescriptorHandleForHeapStart(), constantBufferNum, dxCommon->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)),
+	//    DrawObject3d(&object3ds[i], dxBase->GetCmdList(), basicDescHeap.Get(), vbView, ibView,
+	//        CD3DX12_GPU_DESCRIPTOR_HANDLE(basicDescHeap->GetGPUDescriptorHandleForHeapStart(), constantBufferNum, dxBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)),
 	//        indices, _countof(indices));
 	//}
 
 	//// スプライト共通コマンド
 	//SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxCommon->GetCmdList());
+	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
 	//// スプライト描画
 	//sprite->Draw();
 }
