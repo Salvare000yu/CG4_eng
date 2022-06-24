@@ -25,7 +25,7 @@ public:
 	DxBase* dxBase = nullptr;
 private:
 
-	std::unique_ptr < Sprite> sprite = nullptr;
+	std::unique_ptr < Sprite> sprite1 = nullptr;
 
 	//Model* model_1 = nullptr;
 	//Model* model_2 = nullptr;

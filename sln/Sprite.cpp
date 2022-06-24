@@ -8,9 +8,10 @@ SpriteCommon* Sprite::GetInstance()
     return nullptr;
 }
 
-Sprite* Sprite::Create(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 size, 
+Sprite* Sprite::Create(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 size,  
     DirectX::XMFLOAT4 color, DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY)
 {
+    SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
 
     Sprite* instance = new Sprite(texNumber, position, size, color, anchorpoint, isFlipX, isFlipY);
     //インスタンス初期化

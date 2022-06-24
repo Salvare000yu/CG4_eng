@@ -5,9 +5,11 @@
 #include "DebugText.h"
 #include "GamePlayScene.h"
 
-//#include "PostEffect.h"
+#include "PostEffect.h"
 
-//PostEffect* postEffect = nullptr;
+PostEffect* postEffect = nullptr;
+
+using namespace DirectX;
 
 void TitleScene::Initialize()
 {
@@ -47,7 +49,7 @@ void TitleScene::Initialize()
 	SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/title_prac.png");
 
 	// スプライトの生成
-	sprite.reset(Sprite::Create(1, DirectX::XMFLOAT3(0, 0, 0), {0,0}, {1,1,1,1}, { 0, 0 }, false, false));
+	sprite1.reset(Sprite::Create(1, DirectX::XMFLOAT3(0, 0, 0), { 0,0 }, {1,1,1,1}, { 0, 0 }, false, false));
 	//for (int i = 0; i < 1; i++)
 	//{
 	//    int texNumber = 1;
@@ -64,10 +66,13 @@ void TitleScene::Initialize()
 	//}
 
 	//ポストエフェクト用テクスチャ読み込み
-	SpriteCommon::GetInstance()->LoadTexture(100, L"Resources/White1x1.png");
+	SpriteCommon::GetInstance()->LoadTexture(100, L"Resources/white1x1.png");
 	//ポストエフェクト初期化
-	//postEffect = new PostEffect();
-	//postEffect->Initialize(1, { 0, 0 }, false, false);
+	postEffect = new PostEffect();
+	postEffect->Initialize(100, { 0.0f, 0.0f }, false, false);
+	XMFLOAT2 size = postEffect->GetSize();
+	postEffect->SetSize({ 500.0f,500.0f });
+	postEffect->SetPosition({ 100,100,0 });
 
 #pragma endregion 描画初期化処理
 
@@ -87,7 +92,7 @@ void TitleScene::Finalize()
 	//delete model_1;
 	//delete model_2;
 
-	//delete postEffect;
+	delete postEffect;
 }
 
 void TitleScene::Update()
@@ -99,8 +104,8 @@ void TitleScene::Update()
 	if (input->TriggerKey(DIK_SPACE))     // スペースキーが押されていたら
 	{
 		//シーン切り替え
-		BaseScene* scene = new GamePlayScene();
-		sceneManager_->SetNextScene(scene);
+		//BaseScene* scene = new GamePlayScene();
+		//sceneManager_->SetNextScene(scene);
 	}
 
 	// 座標操作
@@ -128,7 +133,8 @@ void TitleScene::Update()
 	//object3d_3->Update();
 
 	//スプライト更新
-	sprite->Update();
+	sprite1->Update();
+	postEffect->Update();
 }
 
 void TitleScene::Draw()
@@ -137,10 +143,10 @@ void TitleScene::Draw()
 	SpriteCommon::GetInstance()->PreDraw();
 	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
 	//// スプライト描画
-	sprite->Draw();
+	//sprite1->Draw();
 
 	//ポストエフェクトの描画
-	//postEffect->Draw(dxBase->GetCmdList());
+	postEffect->Draw();
 
 	////3dオブジェ描画前処理
 	//Object3d::PreDraw();

@@ -93,8 +93,15 @@ void GamePlayScene::Initialize()
 
 	// スプライトの生成
 	sprite_back.reset(Sprite::Create(1, DirectX::XMFLOAT3(1, 1, 1), { 0,0 }, { 1,1,1,1 }, { 0, 0 }, false, false));
+
+	//XMFLOAT2 size = sprite_back->GetSize();
+
+	//size.x=10;
 	//スプライトサイズ
-	sprite_back->SetSize({ 0,0 });
+	//sprite_back->SetSize({ 20, 0 });
+	sprite_back->TransferVertexBuffer();
+
+	//sprite_back.push_back(sprite_back);
 	//スプライトポジション
 	sprite_back->SetPosition({ -11400,0,0 });
 
@@ -317,6 +324,7 @@ void GamePlayScene::Update()
 	}
 
 #pragma endregion 重複練習終わり
+
 	GamePlayScene::Obj2move();
 
 	if (inputT) // Tキーが押されていたら

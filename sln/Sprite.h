@@ -66,6 +66,8 @@ public:
 	/// ç¿ïWÇÃéÊìæ
 	const DirectX::XMFLOAT3& GetPosition() { return position_; }
 
+	const DirectX::XMFLOAT2& GetSize() { return size_; }
+
 	void SetPosition(const DirectX::XMFLOAT3& position) { position_ = position; }
 	void SetRotation(float rotation) { rotation_ = rotation; }
 	void SetSize(const DirectX::XMFLOAT2& size) { size_ = size; }
