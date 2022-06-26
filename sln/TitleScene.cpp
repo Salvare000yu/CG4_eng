@@ -70,9 +70,9 @@ void TitleScene::Initialize()
 	//ポストエフェクト初期化
 	postEffect = new PostEffect();
 	postEffect->Initialize(100, { 0.0f, 0.0f }, false, false);
-	XMFLOAT2 size = postEffect->GetSize();
 	postEffect->SetSize({ 500.0f,500.0f });
-	postEffect->SetPosition({ 100,100,0 });
+	postEffect->SetPosition({ 0,0,0 });
+	postEffect->TransferVertexBuffer();
 
 #pragma endregion 描画初期化処理
 

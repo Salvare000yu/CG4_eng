@@ -161,11 +161,20 @@ void GamePlayScene::Obj2move()
 	object3d_2->SetPosition(position);
 }
 
-//重複させないために関数作成
-float movefbx1(const float overlapmovepos = fbx1movePos, const float plus = fbx1movePosPlus)
+struct FBX1MOVECUP
 {
-	return overlapmovepos + plus;
-}
+public:
+	float overlapdeviation = -2.5f;
+	//重複させないために関数作成
+	float movefbx1()
+	{
+		return overlapmovepos + plus;
+	}
+private:
+	const float overlapmovepos = fbx1movePos;
+	const float plus = fbx1movePosPlus;
+
+};
 
 void GamePlayScene::Update()
 {
@@ -295,7 +304,7 @@ void GamePlayScene::Update()
 	//	fbxObject_1->SetPosition(position);
 	//}
 #pragma 重複してない
-	float overlapdeviation = -2.5f;
+	FBX1MOVECUP fbx1movecup;
 
 	if (Trigger1)
 	{
@@ -304,8 +313,8 @@ void GamePlayScene::Update()
 		if (Trigger1)
 		{
 			//overlapmoveposとplusを足した関数movefbx1の値分動く
-			position.x += movefbx1();
-			position.y += movefbx1();
+			position.x += fbx1movecup.movefbx1();
+			position.y += fbx1movecup.movefbx1();
 		}
 		fbxObject_1->SetPosition(position);
 	}
@@ -317,8 +326,8 @@ void GamePlayScene::Update()
 		if (Trigger2)
 		{
 			//overlapmoveposとplusを足した関数movefbx1にoverlapdeviationをかけた値分動く
-			position.x += movefbx1() * overlapdeviation;
-			position.y += movefbx1() * overlapdeviation;
+			position.x += fbx1movecup.movefbx1() * fbx1movecup.overlapdeviation;
+			position.y += fbx1movecup.movefbx1() * fbx1movecup.overlapdeviation;
 		}
 		fbxObject_1->SetPosition(position);
 	}
