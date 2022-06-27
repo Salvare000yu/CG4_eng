@@ -51,7 +51,7 @@ protected:
     DxBase* dxBase = nullptr;
     GameSound* gameSound = nullptr;
     DebugText* debugText = nullptr;
-    SpriteCommon* spriteCommon = nullptr;
+    SpriteBase* spriteBase = nullptr;
     SceneManager* sceneManager_ = nullptr;
     Camera* camera = nullptr;
 };

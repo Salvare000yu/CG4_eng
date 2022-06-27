@@ -7,12 +7,12 @@ DebugText* DebugText::GetInstance()
     return &instance;
 }
 
-void DebugText::Initialize(SpriteCommon* spriteCommon, UINT texnumber)
+void DebugText::Initialize(SpriteBase* spriteBase, UINT texnumber)
 {
     //nullptr
-    assert(spriteCommon);
+    assert(spriteBase);
     //引数メンバ変数に格納
-    spriteCommon_ = spriteCommon;
+    spriteBase = spriteBase;
 
     // 全てのスプライトデータについて
     for (int i = 0; i < _countof(sprites_); i++)
@@ -61,10 +61,10 @@ void DebugText::Print(const std::string& text, float x, float y, float scale)
         //sprites[spriteIndex].size = { fontWidth * scale, fontHeight * scale };
         sprites_[spriteIndex_]->SetSize({ fontWidth * scale, fontHeight * scale });
         // 頂点バッファ転送
-       // SpriteTransferVertexBuffer(sprites[spriteIndex], spriteCommon);
+       // SpriteTransferVertexBuffer(sprites[spriteIndex], spriteBase);
         sprites_[spriteIndex_]->TransferVertexBuffer();
         // 更新
-        //SpriteUpdate(sprites[spriteIndex], spriteCommon);
+        //SpriteUpdate(sprites[spriteIndex], spriteBase);
         sprites_[spriteIndex_]->Update();
 
         // 文字を１つ進める
@@ -79,7 +79,7 @@ void DebugText::DrawAll()
     for (int i = 0; i < spriteIndex_; i++)
     {
         // スプライト描画
-        //SpriteDraw(sprites[i], cmdList, spriteCommon, dev);
+        //SpriteDraw(sprites[i], cmdList, spriteBase, dev);
         sprites_[i]->Draw();
     }
 

@@ -89,7 +89,7 @@ void GamePlayScene::Initialize()
 	//Object3d object3ds[OBJECT_NUM];
 
 	// スプライト共通テクスチャ読み込み
-	SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/play.png");
+	SpriteBase::GetInstance()->LoadTexture(1, L"Resources/play.png");
 
 	// スプライトの生成
 	sprite_back.reset(Sprite::Create(1, DirectX::XMFLOAT3(1, 1, 1), { 0,0 }, { 1,1,1,1 }, { 0, 0 }, false, false));
@@ -108,7 +108,7 @@ void GamePlayScene::Initialize()
 	//for (int i = 0; i < 1; i++)
 	//{
 	//    int texNumber = 1;
-	//    Sprite* sprite = Sprite::Create(spriteCommon, texNumber, { 0,0 }, false, false);
+	//    Sprite* sprite = Sprite::Create(spriteBase, texNumber, { 0,0 }, false, false);
 
 	//    // スプライトの座標変更
 	//    sprite->SetPosition({ (float)(80),(float)(20),0 });
@@ -388,8 +388,8 @@ void GamePlayScene::Draw()
 	ID3D12GraphicsCommandList* cmdList = DxBase::GetInstance()->GetCmdList();
 
 	//// スプライト共通コマンド
-	SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
+	SpriteBase::GetInstance()->PreDraw();
+	//SpriteCommonBeginDraw(spriteBase, dxBase->GetCmdList());
 	//// スプライト描画
 	sprite_back->Draw();
 
@@ -421,8 +421,8 @@ void GamePlayScene::Draw()
 	//}
 
 	//// スプライト共通コマンド
-	SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
+	SpriteBase::GetInstance()->PreDraw();
+	//SpriteCommonBeginDraw(spriteBase, dxBase->GetCmdList());
 	//// スプライト描画
    // sprite->Draw();
 

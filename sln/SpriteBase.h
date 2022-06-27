@@ -7,11 +7,11 @@
 /// <summary>
 /// スプライト共通部分
 /// </summary>
-class SpriteCommon
+class SpriteBase
 {
 public:
 
-    static SpriteCommon* GetInstance();
+    static SpriteBase* GetInstance();
     // テクスチャの最大枚数
     static const int spriteSRVCount = 512;
 

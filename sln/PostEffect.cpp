@@ -22,9 +22,9 @@ void PostEffect::Draw()
         return;
     }
 
-    SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
+    SpriteBase* spriteBase = SpriteBase::GetInstance();
 
-    ID3D12GraphicsCommandList* commandList = spriteCommon->GetCommandList();
+    ID3D12GraphicsCommandList* commandList = spriteBase->GetCommandList();
 
 
 
@@ -36,7 +36,7 @@ void PostEffect::Draw()
     //// プリミティブ形状を設定
     //commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-    //spriteCommon->PreDraw();
+    //spriteBase->PreDraw();
 
     //// テクスチャ用デスクリプタヒープの設定
     //ID3D12DescriptorHeap* ppHeaps[] = { descHeap.Get() };
@@ -51,38 +51,52 @@ void PostEffect::Draw()
     commandList->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
 
     // ルートパラメータ1番に シェーダリソースビューをセット
-    spriteCommon->SetGraphicsRootDescriptorTable(1, texNumber_);
+    spriteBase->SetGraphicsRootDescriptorTable(1, texNumber_);
 
     // ポリゴンの描画（4頂点で四角形）
     commandList->DrawInstanced(4, 1, 0, 0);
 }
 
-//void PostEffect::Initialize()
-//{
-//    HRESULT result = S_FALSE;
-//
-//    SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-//
-//    //基底クラスとして初期化
-//    Sprite::Initialize();
-//
-//    //テクスチャリソース設定
-//    D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
-//        DXGI_FORMAT_R8G8B8A8_UNORM,
-//        WinApp::window_width,
-//        (UINT)WinApp::window_height,
-//        1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
-//    );
-//
-//    //テクスチャバッファの生成
-//    result = spriteCommon->GetDevice()->CreateCommittedResource(
-//        &CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
-//            D3D12_MEMORY_POOL_L0),
-//        D3D12_HEAP_FLAG_NONE,
-//        &texresDesc,
-//        D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-//        nullptr,
-//        IID_PPV_ARGS(&texBuff));
-//    assert(SUCCEEDED(result));
-//
-//}
+void PostEffect::Initialize()
+{
+    HRESULT result = S_FALSE;
+
+    SpriteBase* spriteBase = SpriteBase::GetInstance();
+
+    //基底クラスとして初期化
+    Sprite::Initialize(texNumber_,anchorpoint_, isFlipX_, isFlipY_);
+
+    //テクスチャリソース設定
+    D3D12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+        DXGI_FORMAT_R8G8B8A8_UNORM,
+        WinApp::window_width,
+        (UINT)WinApp::window_height,
+        1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
+    );
+
+    //テクスチャバッファの生成
+    result = spriteBase->GetDevice()->CreateCommittedResource(
+        &CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK,
+            D3D12_MEMORY_POOL_L0),
+        D3D12_HEAP_FLAG_NONE,
+        &texresDesc,
+        D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+        nullptr,
+        IID_PPV_ARGS(&texBuff_[texNumber_]));
+    assert(SUCCEEDED(result));
+
+    const UINT pixelCount = WinApp::window_width * WinApp::window_height;
+    //画像1行分のデータサイズ
+    const UINT rowPitch = sizeof(UINT) * WinApp::window_width;
+    //画像全体のデータサイズ
+    const UINT depthPitch = rowPitch * WinApp::window_height;
+    //画像イメージ
+    UINT* img = new UINT[pixelCount];
+    for (int j = 0; j < pixelCount; j++) { img[j] = 0xff0000ff; }
+
+    //テクスチャバッファにデータ転送
+    result = texBuff_[texNumber_]->WriteToSubresource(0, nullptr,
+        img, rowPitch, depthPitch);
+    assert(SUCCEEDED(result));
+    delete[] img;
+}

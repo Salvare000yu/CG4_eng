@@ -1,6 +1,6 @@
 #pragma once
 #include "Sprite.h"
-#include "SpriteCommon.h"
+#include "SpriteBase.h"
 #include "PipelineSet.h"
 
 // Microsoft::WRL::を省略
@@ -30,12 +30,12 @@ public:
 		/// <summary>
 	/// 初期化
 	/// </summary>
-	//void Initialize();
+	void Initialize();
 
 	//ID3D12GraphicsCommandList* GetCommandList() { return commandList_; }
 
 		//テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff[2];
+	ComPtr<ID3D12Resource> texBuff_[2];
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 

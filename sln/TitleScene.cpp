@@ -46,14 +46,14 @@ void TitleScene::Initialize()
 	//Object3d object3ds[OBJECT_NUM];
 
 	// スプライト共通テクスチャ読み込み
-	SpriteCommon::GetInstance()->LoadTexture(1, L"Resources/title_prac.png");
+	SpriteBase::GetInstance()->LoadTexture(1, L"Resources/title_prac.png");
 
 	// スプライトの生成
 	sprite1.reset(Sprite::Create(1, DirectX::XMFLOAT3(0, 0, 0), { 0,0 }, {1,1,1,1}, { 0, 0 }, false, false));
 	//for (int i = 0; i < 1; i++)
 	//{
 	//    int texNumber = 1;
-	//    Sprite* sprite = Sprite::Create(spriteCommon, texNumber, { 0,0 }, false, false);
+	//    Sprite* sprite = Sprite::Create(spriteBase, texNumber, { 0,0 }, false, false);
 
 	//    // スプライトの座標変更
 	//    sprite->SetPosition({ (float)(80),(float)(20),0 });
@@ -66,10 +66,10 @@ void TitleScene::Initialize()
 	//}
 
 	//ポストエフェクト用テクスチャ読み込み
-	SpriteCommon::GetInstance()->LoadTexture(100, L"Resources/white1x1.png");
+	SpriteBase::GetInstance()->LoadTexture(100, L"Resources/white1x1.png");
 	//ポストエフェクト初期化
 	postEffect = new PostEffect();
-	postEffect->Initialize(100, { 0.0f, 0.0f }, false, false);
+	postEffect->Initialize();//100, { 0.0f, 0.0f }, false, falseいちおう
 	postEffect->SetSize({ 500.0f,500.0f });
 	postEffect->SetPosition({ 0,0,0 });
 	postEffect->TransferVertexBuffer();
@@ -140,8 +140,8 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	//// スプライト共通コマンド
-	SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
+	SpriteBase::GetInstance()->PreDraw();
+	//SpriteCommonBeginDraw(SspriteBase, dxBase->GetCmdList());
 	//// スプライト描画
 	//sprite1->Draw();
 
@@ -169,8 +169,8 @@ void TitleScene::Draw()
 	//}
 
 	//// スプライト共通コマンド
-	//SpriteCommon::GetInstance()->PreDraw();
-	//SpriteCommonBeginDraw(spriteCommon, dxBase->GetCmdList());
+	//SpriteBase::GetInstance()->PreDraw();
+	//SpriteCommonBeginDraw(spriteBase, dxBase->GetCmdList());
 	//// スプライト描画
 	//sprite->Draw();
 }

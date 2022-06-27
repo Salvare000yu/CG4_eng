@@ -43,8 +43,8 @@ void GameBase::Initialize()
 	dxBase->Initialize(winApp);
 
 	// スプライト共通部分初期化
-	spriteCommon = SpriteCommon::GetInstance();
-	spriteCommon->Initialize(dxBase->GetDevice(), dxBase->GetCmdList(), winApp->window_width, winApp->window_height);
+	spriteBase = SpriteBase::GetInstance();
+	spriteBase->Initialize(dxBase->GetDevice(), dxBase->GetCmdList(), winApp->window_width, winApp->window_height);
 
 	//const int SPRITES_NUM = 1;
 	//Sprite sprites[SPRITES_NUM];
@@ -55,9 +55,9 @@ void GameBase::Initialize()
 	// デバッグテキスト用のテクスチャ番号を指定
 	const int debugTextTexNumber = 0;
 	// デバッグテキスト用のテクスチャ読み込み
-	spriteCommon->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
+	spriteBase->LoadTexture(debugTextTexNumber, L"Resources/debugfont.png");
 	// デバッグテキスト初期化
-	debugText->Initialize(spriteCommon, debugTextTexNumber);
+	debugText->Initialize(spriteBase, debugTextTexNumber);
 
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
 

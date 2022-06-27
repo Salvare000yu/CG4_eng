@@ -1,4 +1,4 @@
-#include "SpriteCommon.h"
+#include "SpriteBase.h"
 
 #include <cassert>
 
@@ -14,14 +14,14 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-SpriteCommon* SpriteCommon::GetInstance()
+SpriteBase* SpriteBase::GetInstance()
 {
-    static SpriteCommon instance;
+    static SpriteBase instance;
 
     return &instance;
 }
 
-void SpriteCommon::Initialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList,int window_width, int window_height)
+void SpriteBase::Initialize(ID3D12Device* device, ID3D12GraphicsCommandList* commandList,int window_width, int window_height)
 {
     //nullポインタチェック
     assert(device);
@@ -47,7 +47,7 @@ void SpriteCommon::Initialize(ID3D12Device* device, ID3D12GraphicsCommandList* c
     result = dev->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap));
 }
 
-void SpriteCommon::PreDraw()
+void SpriteBase::PreDraw()
 {
 
     // パイプラインステートの設定
@@ -63,7 +63,7 @@ void SpriteCommon::PreDraw()
 
 }
 
-void SpriteCommon::LoadTexture(UINT texnumber, const wchar_t* filename)
+void SpriteBase::LoadTexture(UINT texnumber, const wchar_t* filename)
 {
 
     // 異常な番号の指定を検出
@@ -124,7 +124,7 @@ void SpriteCommon::LoadTexture(UINT texnumber, const wchar_t* filename)
 
 }
 
-void SpriteCommon::SetGraphicsRootDescriptorTable(UINT rootparameterIndex, UINT texNumber)
+void SpriteBase::SetGraphicsRootDescriptorTable(UINT rootparameterIndex, UINT texNumber)
 {
     // シェーダリソースビューをセット
     commandList_->SetGraphicsRootDescriptorTable(rootparameterIndex,
@@ -134,14 +134,14 @@ void SpriteCommon::SetGraphicsRootDescriptorTable(UINT rootparameterIndex, UINT 
             dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
 }
 
-ID3D12Resource* SpriteCommon::GetTexBuff(int texNumber)
+ID3D12Resource* SpriteBase::GetTexBuff(int texNumber)
 {
     assert(0 <= texNumber && texNumber < spriteSRVCount);
 
     return texBuff_[texNumber].Get();
 }
 
-void SpriteCommon::CreateGraphicsPipeline()
+void SpriteBase::CreateGraphicsPipeline()
 {
     HRESULT result;
 

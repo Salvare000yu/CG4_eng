@@ -13,12 +13,12 @@ public: // 定数の宣言
     static const int fontHeight = 18;       // フォント画像内1文字分の縦幅
     static const int fontLineCount = 14;    // フォント画像内1行分の文字数
 
-    int formatPrint(const SpriteCommon& spriteCommon, const float x, const float y, const float scale, DirectX::XMFLOAT4 color, const char* fmt, ...);
+    int formatPrint(const SpriteBase& spriteBase, const float x, const float y, const float scale, DirectX::XMFLOAT4 color, const char* fmt, ...);
 
 public: // メンバ関数
     static DebugText* GetInstance();
 
-    void Initialize(SpriteCommon* spriteCommon, UINT texnumber);
+    void Initialize(SpriteBase* spriteBase, UINT texnumber);
 
     void Finalize();
 
@@ -28,7 +28,7 @@ public: // メンバ関数
 
 private: // メンバ変数   
     //スプライト共通　借りてくる
-    SpriteCommon* spriteCommon_ = nullptr;
+    SpriteBase* spriteBase_ = nullptr;
     // スプライトデータの配列
     Sprite* sprites_[maxCharCount];
     // スプライトデータ配列の添え字番号

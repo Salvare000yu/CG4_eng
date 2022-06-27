@@ -1,6 +1,6 @@
 #pragma once
 
-#include"SpriteCommon.h"
+#include"SpriteBase.h"
 
 #include <wrl.h>
 #include <d3d12.h>
@@ -19,7 +19,7 @@ public:
 	Sprite(UINT texNumber, DirectX::XMFLOAT3 position, DirectX::XMFLOAT2 size, DirectX::XMFLOAT4 color,
 		DirectX::XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
 
-	static SpriteCommon* GetInstance();
+	static SpriteBase* GetInstance();
 
 	// 頂点データ
 	struct VertexPosUv

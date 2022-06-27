@@ -5,7 +5,7 @@
 #include "BaseScene.h"
 #include "Sprite.h"
 #include "Object3d.h"
-#include "SpriteCommon.h"
+#include "SpriteBase.h"
 #include <memory>
 #include "DxBase.h"
 
