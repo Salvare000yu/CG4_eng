@@ -26,6 +26,11 @@ public:
     void PreDraw();
 
     /// <summary>
+    /// 描画前処理
+    /// </summary>
+    void PosteffectPreDraw();
+
+    /// <summary>
     /// テクスチャ読み込み
     /// </summary>
     /// <param name="texnumber"></param>

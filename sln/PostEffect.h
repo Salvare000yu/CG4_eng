@@ -47,5 +47,5 @@ private:
 	//Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;
 
 	// パイプラインセット
-	//PipelineSet pipelineSet;
+	PipelineSet pipelineSet;
 };
