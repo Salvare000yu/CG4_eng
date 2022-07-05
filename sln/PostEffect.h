@@ -35,17 +35,17 @@ public:
 	//ID3D12GraphicsCommandList* GetCommandList() { return commandList_; }
 
 		//テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff_[2];
+	ComPtr<ID3D12Resource> texBuff_;
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
 private:
 	//借りるコマンドリスト
-	ID3D12GraphicsCommandList* commandList_ = nullptr;
+	//ID3D12GraphicsCommandList* commandList_ = nullptr;
 
 	// テクスチャ用デスクリプタヒープの生成
 	//Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descHeap;
 
 	// パイプラインセット
-	PipelineSet pipelineSet;
+	//PipelineSet pipelineSet;
 };

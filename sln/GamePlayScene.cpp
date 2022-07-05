@@ -137,11 +137,12 @@ void GamePlayScene::Finalize()
 }
 
 enum {
-	fbx1movePos = 2,
-	fbx1movePosPlus = 2,
 	obj2MAXPosY = 70,
 	obj2originPosY = 35,
 };
+
+const float fbx1movePos = 2.0;
+const float fbx1movePosPlus = 2.0;
 
 void GamePlayScene::Obj2move()
 {
@@ -163,6 +164,10 @@ void GamePlayScene::Obj2move()
 
 struct FBX1MOVECUP
 {
+private:
+	float overlapmovepos = fbx1movePos;
+	float plus = fbx1movePosPlus;
+
 public:
 	float overlapdeviation = -2.5f;
 	//重複させないために関数作成
@@ -170,9 +175,6 @@ public:
 	{
 		return overlapmovepos + plus;
 	}
-private:
-	const float overlapmovepos = fbx1movePos;
-	const float plus = fbx1movePosPlus;
 
 };
 
@@ -272,8 +274,6 @@ void GamePlayScene::Update()
 		GameSound::GetInstance()->PlayWave("oredakenojikan.wav");
 	}
 
-#pragma region 重複避ける練習
-#pragma 重複してる
 	//float overlapmovepos = 2.0f;
 	//float plus = 1.0f;
 	//float overlapdeviation = -2.5f;
@@ -303,7 +303,7 @@ void GamePlayScene::Update()
 	//	}
 	//	fbxObject_1->SetPosition(position);
 	//}
-#pragma 重複してない
+
 	FBX1MOVECUP fbx1movecup;
 
 	if (Trigger1)
@@ -331,8 +331,6 @@ void GamePlayScene::Update()
 		}
 		fbxObject_1->SetPosition(position);
 	}
-
-#pragma endregion 重複練習終わり
 
 	GamePlayScene::Obj2move();
 

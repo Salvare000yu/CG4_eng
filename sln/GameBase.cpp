@@ -63,7 +63,7 @@ void GameBase::Initialize()
 
 	//入力の初期化
 	input = Input::GetInstance();
-	input->Initialize(winApp);
+	//input->Initialize(winApp);
 
 	//オーディオの初期化
 	gameSound = GameSound::GetInstance();

@@ -15,8 +15,7 @@ public:
 public://メンバ関数
 
 	static Input* GetInstance();
-	//初期化
-	void Initialize(WinApp* WinApp);
+
 	//更新
 	void Update();
 
@@ -35,6 +34,14 @@ public://メンバ関数
 	bool TriggerKey(BYTE keyNumber);
 
 private://メンバ変数
+	//初期化
+	void Initialize(WinApp* WinApp);
+
+	Input(const Input& input) = delete;
+	Input& operator=(const Input& input) = delete;
+
+	Input();
+	~Input();
 
 	//キーボードのデバイス
 	ComPtr<IDirectInputDevice8> devkeyboard;

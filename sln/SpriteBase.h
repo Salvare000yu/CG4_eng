@@ -40,7 +40,7 @@ public:
     /// <summary>
     /// ルートデスクリプタテーブルの設定
     /// </summary>
-    /// <param name="rootparameterIndex">ルートパラメータ番号</param>
+    /// <param name="farameterIndex">ルートパラメータ番号</param>
     /// <param name="texNumber">テクスチャ番号</param>
     void SetGraphicsRootDescriptorTable(UINT rootparameterIndex,UINT texNumber);
 
@@ -58,11 +58,12 @@ public:
 
     ID3D12GraphicsCommandList* GetCommandList() { return commandList_; }
 
+    // パイプラインセット
+    PipelineSet pipelineSet;
 
 //private:
 protected:
-    // パイプラインセット
-    PipelineSet pipelineSet;
+
     // 射影行列
     DirectX::XMMATRIX matProjection_{};
     // テクスチャ用デスクリプタヒープの生成

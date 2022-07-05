@@ -9,6 +9,15 @@
 
 //using namespace Microsoft::WRL;
 
+Input::Input()
+{
+    Initialize(WinApp::GetInstance());
+}
+
+Input::~Input()
+{
+}
+
 Input* Input::GetInstance()
 {
     static Input instance;
