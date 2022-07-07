@@ -7,7 +7,7 @@
 
 #include "PostEffect.h"
 
-PostEffect* postEffect = nullptr;
+//PostEffect* postEffect = nullptr;
 
 using namespace DirectX;
 
@@ -68,11 +68,11 @@ void TitleScene::Initialize()
 	//ポストエフェクト用テクスチャ読み込み
 	SpriteBase::GetInstance()->LoadTexture(100, L"Resources/white1x1.png");
 	//ポストエフェクト初期化
-	postEffect = new PostEffect();
-	postEffect->Initialize();//100, { 0.0f, 0.0f }, false, falseいちおう
-	postEffect->SetSize({ 500.0f,500.0f });
-	postEffect->SetPosition({ 10,10,0 });
-	postEffect->TransferVertexBuffer();
+//	postEffect = new PostEffect();
+////	postEffect->Initialize();//100, { 0.0f, 0.0f }, false, falseいちおう
+//	postEffect->SetSize({ 500.0f,500.0f });
+//	postEffect->SetPosition({ 10,10,0 });
+//	postEffect->TransferVertexBuffer();
 #pragma endregion 描画初期化処理
 
 	int counter = 0; // アニメーションの経過時間カウンター
@@ -91,7 +91,7 @@ void TitleScene::Finalize()
 	//delete model_1;
 	//delete model_2;
 
-	delete postEffect;
+//	delete postEffect;
 }
 
 void TitleScene::Update()
@@ -103,8 +103,8 @@ void TitleScene::Update()
 	if (input->TriggerKey(DIK_SPACE))     // スペースキーが押されていたら
 	{
 		//シーン切り替え
-		//BaseScene* scene = new GamePlayScene();
-		//sceneManager_->SetNextScene(scene);
+		BaseScene* scene = new GamePlayScene();
+		sceneManager_->SetNextScene(scene);
 	}
 
 	// 座標操作
@@ -133,7 +133,7 @@ void TitleScene::Update()
 
 	//スプライト更新
 	sprite1->Update();
-	postEffect->Update();
+	//postEffect->Update();
 }
 
 void TitleScene::Draw()
@@ -142,10 +142,10 @@ void TitleScene::Draw()
 	SpriteBase::GetInstance()->PreDraw();
 	//SpriteCommonBeginDraw(SspriteBase, dxBase->GetCmdList());
 	//// スプライト描画
-	//sprite1->Draw();
+	sprite1->Draw();
 
 	//ポストエフェクトの描画
-	postEffect->Draw();
+	//postEffect->Draw();
 
 	////3dオブジェ描画前処理
 	//Object3d::PreDraw();

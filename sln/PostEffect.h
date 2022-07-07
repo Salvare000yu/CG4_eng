@@ -15,11 +15,7 @@ class PostEffect :
 	public Sprite
 {
 public:
-
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	PostEffect();
+	static PostEffect* GetInstance();
 
 	/// <summary>
 	/// 描画コマンドの発行
@@ -27,19 +23,49 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	void Draw();
 
-		/// <summary>
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize();
 
+private:
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	PostEffect();
+
+public:
 	//ID3D12GraphicsCommandList* GetCommandList() { return commandList_; }
 
-		//テクスチャバッファ
+
+
+	//シーン描画前処理
+	void PreDrawScene(ID3D12GraphicsCommandList* commandList);
+	//シーン描画後処理
+	void PostDrawScene(ID3D12GraphicsCommandList* commandList);
+
+	static void SetDevice(ID3D12Device* device);
+
+	//画面クリアカラー
+	static const float clearColor[4];
+
+private:
+
+	static ID3D12Device* device_;
+
+	//テクスチャバッファ
 	ComPtr<ID3D12Resource> texBuff_;
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
-private:
+	//深度バッファ
+	ComPtr<ID3D12Resource>depthBuff;
+	//RTV用デスクリプタテーブル
+	ComPtr<ID3D12DescriptorHeap>descHeapRTV;
+	//DSV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap>descHeapDSV;
+
 	//借りるコマンドリスト
 	//ID3D12GraphicsCommandList* commandList_ = nullptr;
 

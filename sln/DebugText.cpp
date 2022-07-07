@@ -20,6 +20,7 @@ void DebugText::Initialize(SpriteBase* spriteBase, UINT texnumber)
         // スプライトを生成する
         sprites_[i] = Sprite::Create(texnumber, DirectX::XMFLOAT3(0,0,0), { 0,0 }, {1,1,1,1}, {0, 0});
     }
+
 }
 
 void DebugText::Finalize()

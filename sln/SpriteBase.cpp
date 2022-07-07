@@ -63,18 +63,6 @@ void SpriteBase::PreDraw()
 
 }
 
-void SpriteBase::PosteffectPreDraw()
-{
-
-    // パイプラインステートの設定
-    commandList_->SetPipelineState(pipelineSet.pipelinestate.Get());
-    // ルートシグネチャの設定
-    commandList_->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
-    // プリミティブ形状を設定
-    commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-}
-
 void SpriteBase::LoadTexture(UINT texnumber, const wchar_t* filename)
 {
 
