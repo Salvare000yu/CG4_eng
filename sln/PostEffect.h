@@ -11,8 +11,7 @@ using XMFLOAT3 = DirectX::XMFLOAT3;
 using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMMATRIX = DirectX::XMMATRIX;
 
-class PostEffect :
-	public Sprite
+class PostEffect
 {
 public:
 	static PostEffect* GetInstance();
@@ -28,6 +27,24 @@ public:
 	/// </summary>
 	void Initialize();
 
+	// 頂点データ
+	struct VertexPosUv
+	{
+		DirectX::XMFLOAT3 pos; // xyz座標
+		DirectX::XMFLOAT2 uv;  // uv座標
+	};
+
+	// 定数バッファ用データ構造体
+	struct ConstBufferData {
+		DirectX::XMFLOAT4 color; // 色 (RGBA)
+		DirectX::XMMATRIX mat;   // ３Ｄ変換行列
+	};
+
+	void CreateGraphicsPipelineState();
+
+	// パイプラインセット
+	PipelineSet pipelineSet;
+
 private:
 
 	/// <summary>
@@ -37,8 +54,6 @@ private:
 
 public:
 	//ID3D12GraphicsCommandList* GetCommandList() { return commandList_; }
-
-
 
 	//シーン描画前処理
 	void PreDrawScene(ID3D12GraphicsCommandList* commandList);
@@ -54,6 +69,22 @@ private:
 
 	static ID3D12Device* device_;
 
+	//頂点バッファ;
+	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_;
+
+	//頂点バッファビュー;
+	D3D12_VERTEX_BUFFER_VIEW vbView_{};
+	//定数バッファ;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff_;
+
+	// テクスチャ番号
+	UINT texNumber_ = 0;
+	// 大きさ
+	DirectX::XMFLOAT2 size_ = { 100, 100 };
+
+	// テクスチャ切り出しサイズ
+	DirectX::XMFLOAT2 texSize_ = { 100, 100 };
+
 	//テクスチャバッファ
 	ComPtr<ID3D12Resource> texBuff_;
 	//SRV用デスクリプタヒープ
@@ -65,6 +96,10 @@ private:
 	ComPtr<ID3D12DescriptorHeap>descHeapRTV;
 	//DSV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap>descHeapDSV;
+	//グラフィックスパイプライン
+	ComPtr<ID3D12PipelineState>piplineState;
+	//ルートシグネチャ
+	ComPtr<ID3D12RootSignature>rootSignature;
 
 	//借りるコマンドリスト
 	//ID3D12GraphicsCommandList* commandList_ = nullptr;

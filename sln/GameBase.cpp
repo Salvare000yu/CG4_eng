@@ -131,9 +131,9 @@ void GameBase::Update()
 	input->Update();
 
 	//シーン更新
-	sceneManager_->Update();
+	sceneManager_->Update();/*
 
-	PostEffect::GetInstance()->Update();
+	PostEffect::GetInstance()->Update();*/
 }
 
 void GameBase::Draw()

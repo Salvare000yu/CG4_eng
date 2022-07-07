@@ -66,7 +66,7 @@ void TitleScene::Initialize()
 	//}
 
 	//ポストエフェクト用テクスチャ読み込み
-	SpriteBase::GetInstance()->LoadTexture(100, L"Resources/white1x1.png");
+	//SpriteBase::GetInstance()->LoadTexture(100, L"Resources/white1x1.png");
 	//ポストエフェクト初期化
 //	postEffect = new PostEffect();
 ////	postEffect->Initialize();//100, { 0.0f, 0.0f }, false, falseいちおう
