@@ -3,17 +3,18 @@
 #include "SpriteBase.h"
 #include "PipelineSet.h"
 
-// Microsoft::WRL::を省略
+
+
+class PostEffect
+{
+public:
+	// Microsoft::WRL::を省略
 template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 // DirectX::を省略
 using XMFLOAT2 = DirectX::XMFLOAT2;
 using XMFLOAT3 = DirectX::XMFLOAT3;
 using XMFLOAT4 = DirectX::XMFLOAT4;
 using XMMATRIX = DirectX::XMMATRIX;
-
-class PostEffect
-{
-public:
 	static PostEffect* GetInstance();
 
 	/// <summary>
@@ -65,6 +66,8 @@ public:
 	//画面クリアカラー
 	static const float clearColor[4];
 
+	static const UINT texBuffNum = 2;
+
 private:
 
 	static ID3D12Device* device_;
@@ -86,7 +89,8 @@ private:
 	DirectX::XMFLOAT2 texSize_ = { 100, 100 };
 
 	//テクスチャバッファ
-	ComPtr<ID3D12Resource> texBuff_;
+
+	ComPtr<ID3D12Resource> texBuff_[texBuffNum];
 	//SRV用デスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
