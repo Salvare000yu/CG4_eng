@@ -123,21 +123,26 @@ void PostEffect::CreateGraphicsPipelineState()
 	gpipeline.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 0～255指定のRGBA
 	gpipeline.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
-	// デスクリプタテーブルの設定
-	CD3DX12_DESCRIPTOR_RANGE descRangeSRV;
-	descRangeSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+	// デスクリプタレンジ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV0;
+	descRangeSRV0.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0); // t0 レジスタ
+
+	// デスクリプタレンジ
+	CD3DX12_DESCRIPTOR_RANGE descRangeSRV1;
+	descRangeSRV1.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1); // t1 レジスタ
 
 	// ルートパラメータの設定
-	CD3DX12_ROOT_PARAMETER rootparams[2];
+	CD3DX12_ROOT_PARAMETER rootparams[3]{};
 	rootparams[0].InitAsConstantBufferView(0); // 定数バッファビューとして初期化(b0レジスタ)
-	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV);
+	rootparams[1].InitAsDescriptorTable(1, &descRangeSRV0);
+	rootparams[2].InitAsDescriptorTable(1, &descRangeSRV1);
 
 	// スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0);
 
 	// ルートシグネチャの生成
 	// ルートシグネチャの設定
-	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	ComPtr<ID3DBlob> rootSigBlob;
@@ -285,7 +290,7 @@ void PostEffect::Initialize()
 			//画像全体のデータサイズ
 			const UINT depthPitch = rowPitch * WinApp::window_height;
 			//画像イメージ
-			UINT* img = new UINT[pixelCount];
+			UINT* img = new UINT[pixelCount]{};
 			for (int j = 0; j < pixelCount; j++) { img[j] = 0xff0000ff; }
 
 			//テクスチャバッファにデータ転送
@@ -299,7 +304,7 @@ void PostEffect::Initialize()
 	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
 	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	srvDescHeapDesc.NumDescriptors = 1;
+	srvDescHeapDesc.NumDescriptors = texBuffNum;
 	//SRV用デスクリプタヒープを生成
 	result = device_->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
 	assert(SUCCEEDED(result));
@@ -311,11 +316,17 @@ void PostEffect::Initialize()
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D; //2Dテクスチャ
 	srvDesc.Texture2D.MipLevels = 1;
 
-	//デスクリプターヒープにSRV作成
-	device_->CreateShaderResourceView(texBuff_[0].Get(), //ビューと関連付けるバッファ
-		&srvDesc,
-			descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-	);
+	for (int i = 0; i < texBuffNum; i++)
+	{
+		//デスクリプターヒープにSRV作成
+		device_->CreateShaderResourceView(texBuff_[i].Get(), //ビューと関連付けるバッファ
+			&srvDesc,
+			CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetCPUDescriptorHandleForHeapStart(),i,
+				device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+			)
+		);
+	}
 
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
@@ -398,8 +409,8 @@ void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* commandList)
 	//レンダーターゲットをセット
 	commandList->OMSetRenderTargets(texBuffNum, rtvHs, false, &dsvH);
 
-	CD3DX12_VIEWPORT viewports[texBuffNum];
-	CD3DX12_RECT scissorRects[texBuffNum];
+	CD3DX12_VIEWPORT viewports[texBuffNum]{};
+	CD3DX12_RECT scissorRects[texBuffNum]{};
 
 	for (int i = 0; i < texBuffNum; i++) {
 		viewports[i] = CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::window_width, WinApp::window_height);
@@ -437,21 +448,21 @@ void PostEffect::Draw()
 	//	return;
 	//}
 
-	if (Input::GetInstance()->TriggerKey(DIK_9)) {
-		//デスクリプタヒープにSRV設定
-		static int tex=0;
-			//テクスチャ番号0と1切り替え
-			tex=(tex+1)%2;
-			D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
-			srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-			srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-			srvDesc.Texture2D.MipLevels = 1;
-			device_->CreateShaderResourceView(texBuff_[tex].Get(),
-				&srvDesc,
-				descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-			);
-	}
+	//if (Input::GetInstance()->TriggerKey(DIK_9)) {
+	//	//デスクリプタヒープにSRV設定
+	//	static int tex=0;
+	//		//テクスチャ番号0と1切り替え
+	//		tex=(tex+1)%2;
+	//		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
+	//		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	//		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	//		srvDesc.Texture2D.MipLevels = 1;
+	//		device_->CreateShaderResourceView(texBuff_[tex].Get(),
+	//			&srvDesc,
+	//			descHeapSRV->GetCPUDescriptorHandleForHeapStart()
+	//		);
+	//}
 
 	SpriteBase* spriteBase = SpriteBase::GetInstance();
 
@@ -459,9 +470,9 @@ void PostEffect::Draw()
 
 	//commandList_ = commandList;
 	// パイプラインステートの設定
-	commandList->SetPipelineState(spriteBase->pipelineSet.pipelinestate.Get());
+	commandList->SetPipelineState(pipelineSet.pipelinestate.Get());
 	// ルートシグネチャの設定
-	commandList->SetGraphicsRootSignature(spriteBase->pipelineSet.rootsignature.Get());
+	commandList->SetGraphicsRootSignature(pipelineSet.rootsignature.Get());
 	// プリミティブ形状を設定
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
@@ -483,15 +494,22 @@ void PostEffect::Draw()
 	// ルートパラメータ1番に シェーダリソースビューをセット
 	//spriteBase->SetGraphicsRootDescriptorTable(1, texNumber_);
 
-	commandList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	//commandList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	commandList->SetGraphicsRootDescriptorTable(1,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetGPUDescriptorHandleForHeapStart(), 0,
+			device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		)
+	);
 
-	//commandList->SetGraphicsRootDescriptorTable(1,
-	//    CD3DX12_GPU_DESCRIPTOR_HANDLE(
-	//        descHeapSRV->GetGPUDescriptorHandleForHeapStart(), texNumber_,
-	//        spriteBase->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
-	//    )
-	//);
+	commandList->SetGraphicsRootDescriptorTable(2,
+		CD3DX12_GPU_DESCRIPTOR_HANDLE(
+			descHeapSRV->GetGPUDescriptorHandleForHeapStart(), 1,
+			device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)
+		)
+	);
 	
 	// ポリゴンの描画（4頂点で四角形）
 	commandList->DrawInstanced(4, 1, 0, 0);
+
 }
