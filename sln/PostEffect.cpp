@@ -159,6 +159,15 @@ void PostEffect::CreateGraphicsPipelineState()
 
 }
 
+void PostEffect::TransfarConstBuffer()
+{
+	// 定数バッファにデータ転送
+	ConstBufferData* constMap = nullptr;
+	HRESULT result = constBuff_->Map(0, nullptr, (void**)&constMap);
+	constMap->time = frame / 60.f;	// 60fps想定
+	constBuff_->Unmap(0, nullptr);
+}
+
 PostEffect::PostEffect()
 {
 	device_ = DxBase::GetInstance()->GetDevice();
@@ -256,13 +265,7 @@ void PostEffect::Initialize()
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr,
 		IID_PPV_ARGS(&constBuff_));
 
-	// 定数バッファにデータ転送
-	ConstBufferData* constMap = nullptr;
-	result = constBuff_->Map(0, nullptr, (void**)&constMap);
-	constMap->color = XMFLOAT4(1, 1, 1, 1); // 色指定（RGBA）
-	constMap->mat = XMMatrixIdentity();
-	constBuff_->Unmap(0, nullptr);
-
+	TransfarConstBuffer();
 
 	//テクスチャリソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -463,6 +466,9 @@ void PostEffect::Draw()
 	//			descHeapSRV->GetCPUDescriptorHandleForHeapStart()
 	//		);
 	//}
+
+	frame += 1.f;
+	TransfarConstBuffer();
 
 	SpriteBase* spriteBase = SpriteBase::GetInstance();
 

@@ -37,11 +37,12 @@ using XMMATRIX = DirectX::XMMATRIX;
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferData {
-		DirectX::XMFLOAT4 color; // 色 (RGBA)
-		DirectX::XMMATRIX mat;   // ３Ｄ変換行列
+		float time;
 	};
 
 	void CreateGraphicsPipelineState();
+
+	void TransfarConstBuffer();
 
 	// パイプラインセット
 	PipelineSet pipelineSet;
@@ -113,4 +114,6 @@ private:
 
 	// パイプラインセット
 	//PipelineSet pipelineSet;
+
+	float frame = 0;
 };
